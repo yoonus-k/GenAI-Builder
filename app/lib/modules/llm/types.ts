@@ -18,6 +18,13 @@ export interface ModelInfo {
    * due to rate limits, auth errors, or timeouts. Capped at 1 fallback attempt.
    */
   fallbackModel?: string;
+
+  /**
+   * Whether the model supports tool-calling/function-calling.
+   * If false, the system will skip sending tools in Build mode.
+   * Defaults to true for most modern models.
+   */
+  supportsTools?: boolean;
 }
 
 export interface ProviderInfo {

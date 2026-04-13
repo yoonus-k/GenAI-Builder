@@ -179,8 +179,13 @@ export const ChatImpl = memo(
       }
 
       const providerModels = resolvedProvider.staticModels.map((entry) => entry.name);
+      const isDynamicProvider = ['OpenAILike', 'Ollama', 'LMStudio', 'Together', 'OpenRouter'].includes(
+        resolvedProvider.name,
+      );
+
+      // Only fallback if the model is not in static list AND the provider isn't dynamic
       const fallbackModel = providerModels[0] || DEFAULT_MODEL;
-      const resolvedModel = providerModels.includes(model) ? model : fallbackModel;
+      const resolvedModel = providerModels.includes(model) || isDynamicProvider ? model : fallbackModel;
 
       if (resolvedModel !== model) {
         logger.warn(

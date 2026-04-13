@@ -51,9 +51,10 @@ export default class OpenAILikeProvider extends BaseProvider {
 
       return res.data.map((model) => ({
         name: model.id,
-        label: model.id,
+        label: this._generateModelLabel(model.id),
         provider: this.name,
-        maxTokenAllowed: 8000,
+        maxTokenAllowed: 8192,
+        supportsTools: this._checkToolSupport(model.id),
       }));
     } catch (error) {
       logger.debug(`${this.name}: Not allowed to GET /models endpoint for provider`, error);
@@ -97,7 +98,7 @@ export default class OpenAILikeProvider extends BaseProvider {
           continue;
         }
 
-        const limit = limitStr ? parseInt(limitStr.trim(), 10) : 8000;
+        const limit = limitStr ? parseInt(limitStr.trim(), 10) : 8192;
         const modelName = modelPath.trim();
 
         // Generate a readable label from the model path
@@ -108,6 +109,7 @@ export default class OpenAILikeProvider extends BaseProvider {
           label,
           provider: this.name,
           maxTokenAllowed: limit,
+          supportsTools: this._checkToolSupport(modelName),
         });
       }
 
@@ -133,17 +135,46 @@ export default class OpenAILikeProvider extends BaseProvider {
       .replace(/^accounts\//, '')
       .replace(/^fireworks\/models\//, '')
       .replace(/^models\//, '')
+      .replace(/^v1\//, '')
       // Capitalize first letter of each word
       .replace(/\b\w/g, (l) => l.toUpperCase())
-      // Replace spaces with hyphens for a cleaner look
-      .replace(/\s+/g, '-');
+      // Replace underscores/hyphens with spaces for a cleaner look
+      .replace(/[_-]+/g, ' ');
 
     // Add provider suffix if not already present
-    if (!label.includes('Fireworks') && !label.includes('OpenAI')) {
+    if (
+      !label.toLowerCase().includes('fireworks') &&
+      !label.toLowerCase().includes('openai') &&
+      !label.toLowerCase().includes('nvidia')
+    ) {
       label += ' (OpenAI Compatible)';
     }
 
     return label;
+  }
+
+  /**
+   * Check if a model supports tool-calling based on its ID/name.
+   * Standardizes support for known models that lack function-calling on certain providers.
+   */
+  private _checkToolSupport(modelId: string): boolean {
+    const lowercaseId = modelId.toLowerCase();
+
+    // Known models that don't support tools on NVIDIA NIM / OpenAILike
+    const unsupportedPatterns = [
+      /yi-large/i,
+      /fuyu-8b/i,
+      /jamba/i,
+      /starcoder/i,
+      /nemotron-.*-instruct/i, // Some Nemotron models are chat-only
+    ];
+
+    if (unsupportedPatterns.some((pattern) => pattern.test(lowercaseId))) {
+      logger.debug(`Model ${modelId} detected as non-tool compatible`);
+      return false;
+    }
+
+    return true;
   }
 
   getModelInstance(options: {

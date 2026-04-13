@@ -168,6 +168,7 @@ export const IGNORE_PATTERNS = [
   '**/yarn-error.log*',
   '**/*lock.json',
   '**/*lock.yml',
+  '**/_devonz-*',
 ];
 
 /*
