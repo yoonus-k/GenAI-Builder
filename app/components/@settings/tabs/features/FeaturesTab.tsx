@@ -10,15 +10,19 @@ import { useStore } from '@nanostores/react';
 import { stagingStore, updateSettings as updateStagingSettings } from '~/lib/stores/staging';
 import { autoFixStore, updateAutoFixSettings } from '~/lib/stores/autofix';
 import { agentModeStore, updateAgentModeSettings } from '~/lib/stores/agentMode';
+import { isFeatureSubTabVisible } from '~/utils/settingsVisibility';
 
 // Tab sections for Features
-const featureTabSections = [
+const allFeatureTabSections = [
   { id: 'core', label: 'Core Features' },
   { id: 'beta', label: 'Beta Features' },
   { id: 'prompts', label: 'Prompt Library' },
 ] as const;
 
-type FeatureTabSection = (typeof featureTabSections)[number]['id'];
+// Filter sub-tabs based on VITE_SHOW_FEATURE_* env vars
+const featureTabSections = allFeatureTabSections.filter((s) => isFeatureSubTabVisible(s.id));
+
+type FeatureTabSection = (typeof allFeatureTabSections)[number]['id'];
 
 interface FeatureToggle {
   id: string;
@@ -119,7 +123,7 @@ const FeatureSection = memo(
 );
 
 export default function FeaturesTab() {
-  const [activeSection, setActiveSection] = useState<FeatureTabSection>('core');
+  const [activeSection, setActiveSection] = useState<FeatureTabSection>(featureTabSections[0]?.id || 'core');
 
   const {
     autoSelectTemplate,

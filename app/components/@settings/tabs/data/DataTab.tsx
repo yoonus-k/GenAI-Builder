@@ -9,6 +9,7 @@ import { getAllChats, type Chat } from '~/lib/persistence/chats';
 import { cn } from '~/utils/cn';
 import { toast } from 'sonner';
 import { createScopedLogger } from '~/utils/logger';
+import { isDataSubTabVisible } from '~/utils/settingsVisibility';
 
 const DataVisualization = lazy(() => import('./DataVisualization').then((mod) => ({ default: mod.DataVisualization })));
 
@@ -149,14 +150,16 @@ export function DataTab() {
   // Internal tab state for organizing content
   type DataTabSection = 'chats' | 'settings' | 'api-keys' | 'data-usage';
 
-  const [activeSection, setActiveSection] = useState<DataTabSection>('chats');
+  const tabSections: { id: DataTabSection; label: string }[] = (
+    [
+      { id: 'chats', label: 'Chats' },
+      { id: 'settings', label: 'Settings' },
+      { id: 'api-keys', label: 'API Keys' },
+      { id: 'data-usage', label: 'Data Usage' },
+    ] as const
+  ).filter((s) => isDataSubTabVisible(s.id));
 
-  const tabSections: { id: DataTabSection; label: string }[] = [
-    { id: 'chats', label: 'Chats' },
-    { id: 'settings', label: 'Settings' },
-    { id: 'api-keys', label: 'API Keys' },
-    { id: 'data-usage', label: 'Data Usage' },
-  ];
+  const [activeSection, setActiveSection] = useState<DataTabSection>(tabSections[0]?.id || 'chats');
 
   // Load available chats
   useEffect(() => {

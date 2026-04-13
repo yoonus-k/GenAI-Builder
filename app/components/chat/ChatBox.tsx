@@ -17,6 +17,7 @@ import { ChatModeSelector } from './ChatModeSelector';
 import { AgentToggle } from './AgentToggle';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { TabType } from '~/components/@settings/core/types';
+import { isChatToolVisible } from '~/utils/settingsVisibility';
 
 const SupabaseConnection = lazy(() => import('./SupabaseConnection').then((m) => ({ default: m.SupabaseConnection })));
 const ExpoQrModal = lazy(() => import('~/components/workbench/ExpoQrModal').then((m) => ({ default: m.ExpoQrModal })));
@@ -308,45 +309,51 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
                 setPlanMode={props.setPlanMode}
               />
               <AgentToggle />
-              <IconButton
-                title="Enhance prompt"
-                disabled={props.input.length === 0 || props.enhancingPrompt}
-                className={cn('transition-all', props.enhancingPrompt ? 'opacity-100' : '')}
-                onClick={() => {
-                  props.enhancePrompt?.();
-                  toast.success('Prompt enhanced!');
-                }}
-              >
-                {props.enhancingPrompt ? (
-                  <div className="i-svg-spinners:90-ring-with-bg text-devonz-elements-loader-progress text-xl animate-spin"></div>
-                ) : (
-                  <div className="i-devonz:stars text-xl"></div>
-                )}
-              </IconButton>
+              {isChatToolVisible('enhancement') && (
+                <IconButton
+                  title="Enhance prompt"
+                  disabled={props.input.length === 0 || props.enhancingPrompt}
+                  className={cn('transition-all', props.enhancingPrompt ? 'opacity-100' : '')}
+                  onClick={() => {
+                    props.enhancePrompt?.();
+                    toast.success('Prompt enhanced!');
+                  }}
+                >
+                  {props.enhancingPrompt ? (
+                    <div className="i-svg-spinners:90-ring-with-bg text-devonz-elements-loader-progress text-xl animate-spin"></div>
+                  ) : (
+                    <div className="i-devonz:stars text-xl"></div>
+                  )}
+                </IconButton>
+              )}
 
-              <SpeechRecognitionButton
-                isListening={props.isListening}
-                onStart={props.startListening}
-                onStop={props.stopListening}
-                disabled={props.isStreaming}
-              />
+              {isChatToolVisible('speech') && (
+                <SpeechRecognitionButton
+                  isListening={props.isListening}
+                  onStart={props.startListening}
+                  onStop={props.stopListening}
+                  disabled={props.isStreaming}
+                />
+              )}
 
               {/* Model Selector Button */}
-              <div className="relative">
-                <IconButton
-                  title="Select Model"
-                  className={cn('transition-all flex items-center gap-1', {
-                    'bg-devonz-elements-item-backgroundAccent text-devonz-elements-item-contentAccent':
-                      isModelSelectorOpen,
-                    'bg-devonz-elements-item-backgroundDefault text-devonz-elements-item-contentDefault':
-                      !isModelSelectorOpen,
-                  })}
-                  onClick={() => setIsModelSelectorOpen(!isModelSelectorOpen)}
-                  disabled={!props.providerList || props.providerList.length === 0}
-                >
-                  <div className="i-ph:robot text-lg" />
-                </IconButton>
-              </div>
+              {isChatToolVisible('model-selector') && (
+                <div className="relative">
+                  <IconButton
+                    title="Select Model"
+                    className={cn('transition-all flex items-center gap-1', {
+                      'bg-devonz-elements-item-backgroundAccent text-devonz-elements-item-contentAccent':
+                        isModelSelectorOpen,
+                      'bg-devonz-elements-item-backgroundDefault text-devonz-elements-item-contentDefault':
+                        !isModelSelectorOpen,
+                    })}
+                    onClick={() => setIsModelSelectorOpen(!isModelSelectorOpen)}
+                    disabled={!props.providerList || props.providerList.length === 0}
+                  >
+                    <div className="i-ph:robot text-lg" />
+                  </IconButton>
+                </div>
+              )}
 
               {/* Divider */}
               <div className="w-px h-4 bg-devonz-elements-borderColor mx-0.5" />
@@ -388,11 +395,15 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
                 transition={{ duration: 0.2, ease: 'easeInOut' }}
               >
                 <Suspense>
-                  <ColorSchemeDialog designScheme={props.designScheme} setDesignScheme={props.setDesignScheme} />
-                  <McpTools />
-                  <IconButton title="Upload file" className="transition-all" onClick={() => props.handleFileUpload()}>
-                    <div className="i-ph:paperclip text-xl"></div>
-                  </IconButton>
+                  {isChatToolVisible('theme-selector') && (
+                    <ColorSchemeDialog designScheme={props.designScheme} setDesignScheme={props.setDesignScheme} />
+                  )}
+                  {isChatToolVisible('mcp-tools') && <McpTools />}
+                  {isChatToolVisible('attachments') && (
+                    <IconButton title="Upload file" className="transition-all" onClick={() => props.handleFileUpload()}>
+                      <div className="i-ph:paperclip text-xl"></div>
+                    </IconButton>
+                  )}
                   <WebSearch
                     onSearchResult={(result) => props.onWebSearchResult?.(result)}
                     disabled={props.isStreaming}

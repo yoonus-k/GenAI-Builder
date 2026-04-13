@@ -8,6 +8,7 @@ import { tabConfigurationStore, resetTabConfiguration } from '~/lib/stores/setti
 import { profileStore } from '~/lib/stores/profile';
 import type { TabType, Profile } from './types';
 import { TAB_LABELS, TAB_ICONS, SIDEBAR_CATEGORIES } from './constants';
+import { isTabVisible } from '~/utils/settingsVisibility';
 import { DialogTitle } from '~/components/ui/Dialog';
 import { cn } from '~/utils/cn';
 import { createScopedLogger } from '~/utils/logger';
@@ -82,6 +83,11 @@ export const ControlPanel = ({ open, onClose, initialTab }: ControlPanelProps) =
         }
 
         if (tab.id === 'notifications' && notificationsDisabled) {
+          return false;
+        }
+
+        // Env-var-based visibility control
+        if (!isTabVisible(tab.id)) {
           return false;
         }
 
