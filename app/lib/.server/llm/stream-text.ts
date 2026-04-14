@@ -1,6 +1,7 @@
 import { convertToCoreMessages, streamText as _streamText, type Message } from 'ai';
 import {
   MAX_TOKENS,
+  DEFAULT_COMPLETION_LIMIT,
   isReasoningModel,
   getThinkingProviderOptions,
   getCompletionTokenLimit,
@@ -330,7 +331,9 @@ export async function streamText(props: {
     logger,
   });
 
-  const dynamicMaxTokens = modelDetails ? getCompletionTokenLimit(modelDetails) : Math.min(MAX_TOKENS, 16384);
+  const dynamicMaxTokens = modelDetails
+    ? getCompletionTokenLimit(modelDetails)
+    : Math.min(MAX_TOKENS, DEFAULT_COMPLETION_LIMIT);
 
   // Use model-specific limits directly - no artificial cap needed
   const safeMaxTokens = dynamicMaxTokens;

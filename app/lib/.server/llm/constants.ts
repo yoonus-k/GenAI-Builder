@@ -9,31 +9,35 @@ const logger = createScopedLogger('LLMConstants');
  * This serves as a fallback when model-specific limits are unavailable
  * Modern models like Claude 3.5, GPT-4o, and Gemini Pro support 128k+ tokens
  */
-export const MAX_TOKENS = 128000;
+// Maximum tokens for context window (updated for modern model capabilities like Gemini 1.5/2.0 and Kimi)
+export const MAX_TOKENS = 1000000;
+
+// Default completion token limit fallback for responses
+export const DEFAULT_COMPLETION_LIMIT = 32768;
 
 /*
  * Provider-specific default completion token limits
  * Used as fallbacks when model doesn't specify maxCompletionTokens
  */
 export const PROVIDER_COMPLETION_LIMITS: Record<string, number> = {
-  OpenAI: 4096, // Standard GPT models (o1 models have much higher limits)
-  Github: 4096, // GitHub Models use OpenAI-compatible limits
-  Anthropic: 64000, // Conservative limit for Claude 4 models (Opus: 32k, Sonnet: 64k)
-  Google: 8192, // Gemini 1.5 Pro/Flash standard limit
-  Cohere: 4000,
-  DeepSeek: 8192,
-  Groq: 8192,
-  HuggingFace: 4096,
-  Mistral: 8192,
-  Ollama: 8192,
-  OpenRouter: 8192,
-  Perplexity: 8192,
-  Together: 8192,
-  xAI: 8192,
-  LMStudio: 8192,
-  OpenAILike: 8192,
-  AmazonBedrock: 8192,
-  Hyperbolic: 8192,
+  OpenAI: 16384, // Higher limit for modern GPT-4o and o1-preview/mini
+  Github: 16384,
+  Anthropic: 128000, // Opus and Sonnet 3.5 support high output and extended thinking
+  Google: 128000, // Gemini 1.5 Pro and 2.0 Flash support very long context and output
+  Cohere: 16384,
+  DeepSeek: 32768, // DeepSeek V3/R1 has deep reasoning output
+  Groq: 128000,
+  HuggingFace: 16384,
+  Mistral: 32768,
+  Ollama: 32768,
+  OpenRouter: 128000,
+  Perplexity: 32768,
+  Together: 128000,
+  xAI: 128000,
+  LMStudio: 32768,
+  OpenAILike: 128000, // Default for most long-in/long-out providers like Moonshot
+  AmazonBedrock: 32768,
+  Hyperbolic: 32768,
 };
 
 /*
@@ -45,7 +49,8 @@ export function isReasoningModel(modelName: string): boolean {
     /^(o1|o3|gpt-5)/i.test(modelName) ||
     /deepseek[-_]?r1/i.test(modelName) ||
     /qwq/i.test(modelName) ||
-    /kimi[-_]?thinking/i.test(modelName);
+    /kimi[-_]?thinking/i.test(modelName) ||
+    /kimi[-_]?k/i.test(modelName);
 
   logger.debug(`REGEX TEST: "${modelName}" matches reasoning pattern: ${result}`);
 
@@ -113,7 +118,7 @@ export function getCompletionTokenLimit(modelDetails: { maxCompletionTokens?: nu
     return providerDefault;
   }
 
-  return Math.min(MAX_TOKENS, 16384);
+  return Math.min(MAX_TOKENS, DEFAULT_COMPLETION_LIMIT);
 }
 
 /**
@@ -219,6 +224,9 @@ export const MODEL_CONTEXT_LIMITS: Record<string, number> = {
   // xAI
   'grok-2': 131_072,
   'grok-3': 131_072,
+
+  // Moonshot (Kimi)
+  'kimi-k2.5': 256_000,
 };
 
 /**
