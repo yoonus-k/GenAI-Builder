@@ -205,7 +205,7 @@ export class GitLabApiService {
 
     while (page <= maxPages) {
       const response = await this._request(
-        `/projects?membership=${membership}&min_access_level=${minAccessLevel}&per_page=${perPage}&page=${page}&order_by=updated_at&sort=desc`,
+        `/groups/6/projects?min_access_level=${minAccessLevel}&per_page=${perPage}&page=${page}&order_by=updated_at&sort=desc`,
       );
 
       if (!response.ok) {
@@ -274,14 +274,14 @@ export class GitLabApiService {
     }));
   }
 
-  async getGroups(minAccessLevel = 10): Promise<GitLabGroupInfo[]> {
-    const response = await this._request(`/groups?min_access_level=${minAccessLevel}`);
+  async getGroup(groupId: number | string): Promise<GitLabGroupInfo | null> {
+    const response = await this._request(`/groups/${groupId}`);
 
     if (response.ok) {
       return await response.json();
     }
 
-    return [];
+    return null;
   }
 
   async getSnippets(): Promise<unknown[]> {
@@ -311,6 +311,7 @@ export class GitLabApiService {
         initialize_with_readme: false, // Don't initialize with README to avoid conflicts
         default_branch: 'main', // Explicitly set default branch
         description: `Project created from Devonz.diy`,
+        namespace_id: 6, // Force creation in group 6
       }),
     });
 
@@ -405,7 +406,17 @@ export class GitLabApiService {
       const response = await this._request(`/projects/${encodedPath}`);
 
       if (response.ok) {
-        return await response.json();
+        const project: GitLabProjectResponse = await response.json();
+
+        // Enforce Group 6 restriction
+        if (project.namespace?.id !== 6) {
+          logger.warn(
+            `Project ${projectPath} found but does not belong to group 6 (belongs to ${project.namespace?.id})`,
+          );
+          return null;
+        }
+
+        return project;
       }
 
       if (response.status === 404) {

@@ -30,6 +30,8 @@ export interface GitLabProjectInfo {
 export interface GitLabGroupInfo {
   id: number;
   name: string;
+  path: string;
+  full_path: string;
   web_url: string;
   avatar_url: string;
 }
@@ -88,6 +90,13 @@ export interface GitLabProjectResponse {
     id: number;
     username: string;
     name: string;
+  };
+  namespace: {
+    id: number;
+    name: string;
+    path: string;
+    kind: string;
+    full_path: string;
   };
 }
 

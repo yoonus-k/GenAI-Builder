@@ -137,7 +137,7 @@ export function useGitLabDeploy() {
         return files;
       }
 
-      const fileContents = await getAllFiles('/');
+      const fileContents = await getAllFiles('.');
 
       /*
        * Show GitLab deployment dialog here - it will handle the actual deployment

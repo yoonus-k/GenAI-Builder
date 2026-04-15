@@ -31,7 +31,7 @@ async function gitlabProjectsLoader({ request }: { request: Request }) {
       return errorResponse(new AppError(AppErrorType.VALIDATION, 'GitLab token is required', 400));
     }
 
-    const url = `${gitlabUrl}/api/v4/projects?membership=true&per_page=100&order_by=updated_at&sort=desc`;
+    const url = `${gitlabUrl}/api/v4/groups/6/projects?per_page=100&order_by=updated_at&sort=desc`;
 
     const response = await externalFetch({
       url,

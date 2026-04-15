@@ -93,7 +93,7 @@ export function useVercelDeploy() {
       let finalBuildPath = buildPath;
 
       // List of common output directories to check if the specified build path doesn't exist
-      const commonOutputDirs = [buildPath, '/dist', '/build', '/out', '/output', '/.next', '/public'];
+      const commonOutputDirs = [buildPath, 'dist', 'build', 'out', 'output', '.next', 'public'];
 
       // Verify the build path exists, or try to find an alternative
       let buildPathExists = false;
@@ -176,8 +176,8 @@ export function useVercelDeploy() {
       try {
         await getAllProjectFiles('.');
       } catch {
-        // Fallback to /home/project if current directory doesn't work
-        await getAllProjectFiles('/home/project');
+        // Fallback to project root if current directory doesn't work
+        await getAllProjectFiles('.');
       }
 
       // Use chatId instead of artifact.id

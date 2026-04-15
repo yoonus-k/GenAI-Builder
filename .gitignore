@@ -33,7 +33,7 @@ functions/build/
 *.vars
 .wrangler
 _worker.bundle
-
+.react-router/
 Modelfile
 modelfiles
 build-output.log

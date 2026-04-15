@@ -36,6 +36,7 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
   const [createdRepoUrl, setCreatedRepoUrl] = useState('');
   const [pushedFiles, setPushedFiles] = useState<{ path: string; size: number }[]>([]);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [group, setGroup] = useState<any>(null); // Use any for now or GitLabGroupInfo if imported
   const currentChatId = useStore(chatId);
 
   // Load GitLab connection on mount
@@ -49,8 +50,14 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
       if (connection?.user && connection?.token) {
         setUser(connection.user);
 
-        // Only fetch if we have both user and token
+        // Fetch group info for group 6 restriction
         if (connection.token.trim()) {
+          const apiService = new GitLabApiService(connection.token, connection.gitlabUrl || 'https://gitlab.com');
+          apiService
+            .getGroup(6)
+            .then(setGroup)
+            .catch((err) => logger.error('Failed to fetch group info:', err));
+
           fetchRecentRepos(connection.token, connection.gitlabUrl || 'https://gitlab.com');
         }
       }
@@ -135,8 +142,22 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
         toast.info(`Repository name sanitized to "${sanitizedRepoName}" to meet GitLab requirements`);
       }
 
-      // Check if project exists using the sanitized name
-      const projectPath = `${connection.user.username}/${sanitizedRepoName}`;
+      /*
+       * Check if project exists using the sanitized name
+       * Determine project path - for group 6 restriction, we should ideally use the group path
+       */
+      let projectPath = `6/${sanitizedRepoName}`;
+
+      try {
+        const group = await apiService.getGroup(6);
+
+        if (group) {
+          projectPath = `${group.full_path}/${sanitizedRepoName}`;
+        }
+      } catch (e) {
+        logger.warn('Failed to fetch group info, falling back to group ID 6 for path', e);
+      }
+
       const existingProject = await apiService.getProjectByPath(projectPath);
       const projectExists = existingProject !== null;
 
@@ -531,16 +552,15 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
 
                 <div className="flex items-center gap-3 mb-6 p-4 bg-devonz-elements-background-depth-2 dark:bg-devonz-elements-background-depth-3 rounded-lg border border-devonz-elements-borderColor dark:border-devonz-elements-borderColor-dark">
                   <div className="relative">
-                    {user.avatar_url && user.avatar_url !== 'null' && user.avatar_url !== '' ? (
+                    {group?.avatar_url || user.avatar_url ? (
                       <img
                         loading="lazy"
-                        src={user.avatar_url}
-                        alt={user.username}
+                        src={group?.avatar_url || user.avatar_url}
+                        alt={group?.name || user.username}
                         className="w-10 h-10 rounded-full object-cover"
                         crossOrigin="anonymous"
                         referrerPolicy="no-referrer"
                         onError={(e) => {
-                          // Handle CORS/COEP errors by hiding the image and showing fallback
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';
 
@@ -551,7 +571,6 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
                           }
                         }}
                         onLoad={(e) => {
-                          // Ensure fallback is hidden when image loads successfully
                           const target = e.target as HTMLImageElement;
 
                           const fallback = target.parentElement?.querySelector('.avatar-fallback') as HTMLElement;
@@ -566,14 +585,13 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
                     <div
                       className="avatar-fallback w-10 h-10 rounded-full bg-devonz-elements-background-depth-4 flex items-center justify-center text-devonz-elements-textSecondary font-semibold text-sm"
                       style={{
-                        display:
-                          user.avatar_url && user.avatar_url !== 'null' && user.avatar_url !== '' ? 'none' : 'flex',
+                        display: group?.avatar_url || user.avatar_url ? 'none' : 'flex',
                       }}
                     >
-                      {user.name ? (
+                      {group?.name ? (
+                        group.name.charAt(0).toUpperCase()
+                      ) : user.name ? (
                         user.name.charAt(0).toUpperCase()
-                      ) : user.username ? (
-                        user.username.charAt(0).toUpperCase()
                       ) : (
                         <div className="i-ph:user w-5 h-5" />
                       )}
@@ -584,10 +602,10 @@ export function GitLabDeploymentDialog({ isOpen, onClose, projectName, files }: 
                   </div>
                   <div>
                     <p className="text-sm font-medium text-devonz-elements-textPrimary dark:text-devonz-elements-textPrimary-dark">
-                      {user.name || user.username}
+                      {group?.name || user.name || user.username}
                     </p>
                     <p className="text-sm text-devonz-elements-textSecondary dark:text-devonz-elements-textSecondary-dark">
-                      @{user.username}
+                      @{group?.path || user.username}
                     </p>
                   </div>
                 </div>

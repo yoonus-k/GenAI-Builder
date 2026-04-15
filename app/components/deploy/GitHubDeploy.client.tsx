@@ -137,7 +137,7 @@ export function useGitHubDeploy() {
         return files;
       }
 
-      const fileContents = await getAllFiles('/');
+      const fileContents = await getAllFiles('.');
 
       /*
        * Show GitHub deployment dialog here - it will handle the actual deployment

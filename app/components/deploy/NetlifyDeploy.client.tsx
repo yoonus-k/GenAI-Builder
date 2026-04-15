@@ -97,7 +97,7 @@ export function useNetlifyDeploy() {
       let finalBuildPath = buildPath;
 
       // List of common output directories to check if the specified build path doesn't exist
-      const commonOutputDirs = [buildPath, '/dist', '/build', '/out', '/output', '/.next', '/public'];
+      const commonOutputDirs = [buildPath, 'dist', 'build', 'out', 'output', '.next', 'public'];
 
       // Verify the build path exists, or try to find an alternative
       let buildPathExists = false;
