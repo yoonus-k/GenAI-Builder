@@ -194,16 +194,14 @@ const PORT_PATTERNS = [
    * localhost / 0.0.0.0 / 127.0.0.1 patterns — use negative lookahead to
    * skip "in use" / "already" messages (e.g. "localhost:3000 is already in use").
    */
-  /localhost:(\d+)(?!\s+is\b)(?!.*(?:in use|already))/i,
-  /0\.0\.0\.0:(\d+)(?!\s+is\b)(?!.*(?:in use|already))/i,
-  /127\.0\.0\.1:(\d+)(?!\s+is\b)(?!.*(?:in use|already))/i,
+  /\b(?:localhost|0\.0\.0\.0|127\.0\.0\.1):(\d{4,5})\b(?!\s+is\b)(?!.*(?:in use|already))/i,
 
   /*
    * Broad "port XXXX" pattern — uses \b after the digits to prevent
    * regex backtracking, and a negative lookahead to skip messages
    * like "Port 5173 is in use" which are NOT server announcements.
    */
-  /port\s+(\d+)\b(?!\s+is\b)/i,
+  /\bport\s+(\d{4,5})\b(?!\s+is\b)(?!.*(?:in use|already|occupied))/i,
 ];
 
 /** Internal representation of a terminal session on the server. */

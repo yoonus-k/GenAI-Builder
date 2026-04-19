@@ -107,18 +107,18 @@ export function getThinkingProviderOptions(
  * 2. Provider-specific default from `PROVIDER_COMPLETION_LIMITS`
  * 3. Fallback: `min(MAX_TOKENS, 16384)`
  */
-export function getCompletionTokenLimit(modelDetails: { maxCompletionTokens?: number; provider: string }): number {
-  if (modelDetails.maxCompletionTokens && modelDetails.maxCompletionTokens > 0) {
-    return modelDetails.maxCompletionTokens;
+export function getCompletionTokenLimit(modelDetails: {
+  maxCompletionTokens?: number;
+  maxTokenAllowed?: number;
+  provider: string;
+}): number {
+  const providerDefault =
+    PROVIDER_COMPLETION_LIMITS[modelDetails.provider] || Math.min(MAX_TOKENS, DEFAULT_COMPLETION_LIMIT);
+  if (modelDetails.maxTokenAllowed && providerDefault > modelDetails.maxTokenAllowed) {
+    return modelDetails.maxTokenAllowed;
   }
 
-  const providerDefault = PROVIDER_COMPLETION_LIMITS[modelDetails.provider];
-
-  if (providerDefault) {
-    return providerDefault;
-  }
-
-  return Math.min(MAX_TOKENS, DEFAULT_COMPLETION_LIMIT);
+  return providerDefault;
 }
 
 /**

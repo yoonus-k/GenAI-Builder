@@ -5,11 +5,7 @@ import { generateText } from 'ai';
 import { z } from 'zod';
 import { providerSchema } from '~/lib/api/schemas';
 import { PROVIDER_LIST } from '~/utils/constants';
-import {
-  isReasoningModel,
-  getThinkingProviderOptions,
-  getCompletionTokenLimit,
-} from '~/lib/.server/llm/constants';
+import { isReasoningModel, getThinkingProviderOptions, getCompletionTokenLimit } from '~/lib/.server/llm/constants';
 import type { ModelInfo } from '~/lib/modules/llm/types';
 import { resolveModel } from '~/lib/.server/llm/resolve-model';
 import { getApiKeysFromCookie, getProviderSettingsFromCookie } from '~/lib/api/cookies';
@@ -76,9 +72,13 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
   const parsed = llmCallRequestSchema.safeParse(rawBody);
 
   if (!parsed.success) {
-    logger.warn('LLM call request validation failed:', parsed.error.issues);
+    logger.warn('LLM call request validation failed:', JSON.stringify(parsed.error.flatten(), null, 2));
 
-    return errorResponse(new AppError(AppErrorType.VALIDATION, 'Invalid request'));
+    return errorResponse(
+      new AppError(AppErrorType.VALIDATION, 'Invalid request', 400, {
+        details: parsed.error.flatten().fieldErrors,
+      }),
+    );
   }
 
   const { system, message, model, provider, streamOutput } = parsed.data as {

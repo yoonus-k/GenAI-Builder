@@ -40,6 +40,18 @@ const SHADCN_PEER_DEPS: Record<string, string> = {
   'react-resizable-panels': '^2.1.7',
   recharts: '^2.15.0',
   'tailwindcss-animate': '^1.0.7',
+
+  // PostCSS plugins — frequently referenced in postcss.config.js but omitted from package.json
+  autoprefixer: '^10.4.20',
+  '@tailwindcss/postcss': '^4.1.0',
+
+  // Vite framework plugins — commonly missing when the AI forgets to add them to package.json
+  '@vitejs/plugin-react': '^4.3.4',
+  '@vitejs/plugin-react-swc': '^3.7.2',
+  '@vitejs/plugin-vue': '^5.2.1',
+  '@vitejs/plugin-vue-jsx': '^4.1.1',
+  '@sveltejs/vite-plugin-svelte': '^5.0.3',
+  'vite-plugin-solid': '^2.11.6',
 };
 
 const UNIVERSAL_EXTRA_PACKAGES: Record<string, string> = {

@@ -16,13 +16,15 @@ import { AppError, AppErrorType } from './errors';
  */
 
 /** Shared schema for LLM provider objects sent from the client. */
-export const providerSchema = z.object({
-  name: z.string().min(1, 'Provider name is required'),
-  staticModels: z.array(z.any()).optional(),
-  getApiKeyLink: z.string().optional(),
-  labelForGetApiKey: z.string().optional(),
-  icon: z.string().optional(),
-});
+export const providerSchema = z
+  .object({
+    name: z.string().min(1, 'Provider name is required'),
+    staticModels: z.array(z.any()).optional(),
+    getApiKeyLink: z.string().optional(),
+    labelForGetApiKey: z.string().optional(),
+    icon: z.string().optional(),
+  })
+  .passthrough();
 
 /*
  * ---------------------------------------------------------------------------

@@ -25,7 +25,7 @@ export interface Logger {
 
 const isProduction = typeof process !== 'undefined' && process.env.NODE_ENV === 'production';
 
-let currentLevel: DebugLevel = import.meta.env.VITE_LOG_LEVEL || 'info';
+let currentLevel: DebugLevel = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_LOG_LEVEL) || 'info';
 
 export const logger: Logger = {
   trace: (...messages: unknown[]) => logWithDebugCapture('trace', undefined, messages),
@@ -50,7 +50,7 @@ export function createScopedLogger(scope: string): Logger {
 }
 
 function setLevel(level: DebugLevel) {
-  if ((level === 'trace' || level === 'debug') && import.meta.env.PROD) {
+  if ((level === 'trace' || level === 'debug') && typeof import.meta !== 'undefined' && import.meta.env?.PROD) {
     return;
   }
 

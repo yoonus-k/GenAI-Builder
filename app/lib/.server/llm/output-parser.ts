@@ -77,6 +77,9 @@ interface ParserInternalState {
 
   /** Total bytes processed since last event emission (for deadlock detection). */
   bytesSinceLastEvent: number;
+
+  /** Number of consecutive nested actions detected (for stuttering detection). */
+  nestedActionCount: number;
 }
 
 // ─── Parser ─────────────────────────────────────────────────────────────────
@@ -239,6 +242,7 @@ export class ServerOutputParser {
       s.state = ParserState.InsideArtifact;
       s.currentArtifactId = artifactId;
       s.currentArtifactTitle = artifactTitle;
+      s.nestedActionCount = 0;
 
       logger.debug(`Artifact opened: id=${artifactId}, title=${artifactTitle}`);
       s.bytesSinceLastEvent = 0;
@@ -437,6 +441,18 @@ export class ServerOutputParser {
 
       // Close current action implicitly and open the new one
       logger.warn('Nested action tag detected — closing current action implicitly');
+      s.nestedActionCount++;
+
+      // Circuit breaker: detect LLM stuttering loop
+      if (s.nestedActionCount > 5) {
+        logger.error('Parser loop detected: too many nested actions — forcing parser reset');
+        events.push(
+          this.#makeError('LLM_STUTTERING', 'LLM stuttering detected: too many nested actions without content', true),
+        );
+        this.#forceReset(s);
+
+        return tagIndex; // Re-parse from this tag in idle state
+      }
 
       if (s.currentFilePath) {
         this.#flushAccumulator(s, events);
@@ -519,6 +535,7 @@ export class ServerOutputParser {
     s.currentFilePath = null;
     s.contentAccumulator = '';
     s.bytesSinceLastEvent = 0;
+    s.nestedActionCount = 0;
   }
 
   /** Create clean initial state. */
@@ -531,6 +548,7 @@ export class ServerOutputParser {
       currentFilePath: null,
       contentAccumulator: '',
       bytesSinceLastEvent: 0,
+      nestedActionCount: 0,
     };
   }
 
