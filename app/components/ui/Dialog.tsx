@@ -24,10 +24,10 @@ export const DialogButton = memo(({ type, children, onClick, disabled }: DialogB
       className={cn(
         'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors',
         type === 'primary'
-          ? 'bg-accent-600 text-white hover:bg-accent-700'
+          ? 'bg-[#E68D7B] text-white hover:bg-[#BB7B6A] shadow-lg shadow-[#E68D7B]/10'
           : type === 'secondary'
-            ? 'bg-transparent text-devonz-elements-textSecondary hover:bg-devonz-elements-bg-depth-3 hover:text-devonz-elements-textPrimary'
-            : 'bg-transparent text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10',
+            ? 'bg-transparent text-devonz-elements-textSecondary hover:bg-devonz-elements-bg-depth-3 hover:text-devonz-elements-textPrimary border border-devonz-elements-borderColor/30'
+            : 'bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500 hover:text-white dark:hover:bg-red-500 transition-all duration-200',
       )}
       onClick={onClick}
       disabled={disabled}
