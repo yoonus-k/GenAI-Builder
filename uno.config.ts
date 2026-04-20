@@ -116,9 +116,18 @@ export default defineConfig({
   safelist: [...Object.keys(customIconCollection[collectionName] || {}).map((x) => `i-devonz:${x}`)],
   shortcuts: {
     'devonz-ease-cubic-bezier': 'ease-[cubic-bezier(0.4,0,0.2,1)]',
-    'transition-theme': 'transition-[background-color,border-color,color] duration-150 devonz-ease-cubic-bezier',
+    'transition-theme': 'transition-[background-color,border-color,color,backdrop-filter] duration-200 devonz-ease-cubic-bezier',
     kdb: 'bg-devonz-elements-code-background text-devonz-elements-code-text py-1 px-1.5 rounded-md',
     'max-w-chat': 'max-w-[var(--chat-max-width)]',
+
+    /* Alinma AI Hub - High Fidelity Shortcuts */
+    'surface-0': 'bg-devonz-elements-bg-depth-1',
+    'surface-1': 'bg-devonz-elements-bg-depth-2',
+    'surface-2': 'bg-devonz-elements-bg-depth-3',
+    'glass-panel': 'bg-white/70 backdrop-blur-12px border border-white/40 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.4)]',
+    'glow-effect': 'shadow-[var(--devonz-shadow-premium)]',
+    'premium-button': 'flex items-center justify-center gap-2.5 h-11 rounded-full px-6 text-base font-semibold text-devonz-elements-button-primary-text bg-devonz-elements-button-primary-background hover:bg-devonz-elements-button-primary-backgroundHover shadow-md hover:shadow-[0_8px_20px_rgba(187,123,106,0.25)] transition-all duration-300 active:scale-[0.97] border border-white/20',
+    'gradient-bg': 'bg-gradient-to-br from-[var(--devonz-bg-stop-1)] via-[var(--devonz-bg-stop-2)] to-[var(--devonz-bg-stop-3)] bg-fixed',
   },
   rules: [
     /**
