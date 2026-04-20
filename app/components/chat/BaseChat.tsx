@@ -551,7 +551,7 @@ export const BaseChat = React.memo(
     const baseChat = (
       <div
         ref={ref}
-        className={cn(styles.BaseChat, 'relative flex flex-1 min-h-0 w-full overflow-hidden')}
+        className={cn(styles.BaseChat, 'relative flex flex-1 min-h-0 w-full overflow-hidden gradient-bg')}
         data-chat-visible={isHydrated ? String(showChat) : undefined}
         suppressHydrationWarning
       >
@@ -574,18 +574,42 @@ export const BaseChat = React.memo(
               ) : (
                 <>
                   {!chatStarted && (
-                    <div id="intro" className="mt-[8vh] max-w-2xl mx-auto text-center px-4 lg:px-0 relative">
-                      {/* Liquid Metal 3D Text */}
-                      <div className="liquid-metal-container">
-                        <h1 className="liquid-metal-text" aria-label="Devonz">
-                          Devonz
-                        </h1>
+                    <div
+                      id="intro"
+                      className="mt-[12vh] max-w-4xl mx-auto text-center px-4 lg:px-0 relative flex flex-col items-center gap-12 mb-20"
+                    >
+                      <div className="flex flex-col items-center gap-10 animate-fade-in group">
+                        <img
+                          src={theme === 'dark' ? '/logo/Logo_Dark_Text.svg' : '/logo/Logo_Light_Text.svg'}
+                          alt="Alinma AI Hub"
+                          className="h-20 lg:h-28 object-contain drop-shadow-sm transition-all duration-500 group-hover:scale-105"
+                        />
                       </div>
 
-                      {/* Subtitle below the 3D text */}
-                      <p className="text-base lg:text-lg text-[#8badd4] animate-fade-in animation-delay-200">
-                        Build anything with AI. Just describe what you want.
-                      </p>
+                      <div className="flex flex-col gap-3 animate-fade-in animation-delay-200">
+                        <p className="text-2xl lg:text-4xl text-devonz-elements-textPrimary max-w-4xl leading-tight font-bold tracking-tighter">
+                          Build your own apps with the power of AI. <br />
+                          <span className="text-devonz-elements-textSecondary text-base lg:text-xl font-medium opacity-60 block mt-3 px-4 tracking-wide">
+                            Just describe your vision and let Vibe Coder handle the rest.
+                          </span>
+                        </p>
+                      </div>
+
+                      {/* Quick Actions Grid from main.html */}
+                      {/* <div className="flex flex-wrap justify-center gap-3 mt-4">
+                          <button className="bg-white/90 hover:bg-[#FFF6F4] text-[#BB7B6A] px-5 py-2.5 rounded-full text-sm font-semibold border border-[#FFD8CF] shadow-sm transition-all duration-200 flex items-center gap-2 active:scale-[0.98]">
+                            <div className="i-ph:file-arrow-up-bold text-lg" />
+                            Import Financial Model
+                          </button>
+                          <button className="bg-white/90 hover:bg-[#FFF6F4] text-[#BB7B6A] px-5 py-2.5 rounded-full text-sm font-semibold border border-[#FFD8CF] shadow-sm transition-all duration-200 flex items-center gap-2 active:scale-[0.98]">
+                            <div className="i-ph:folder-open-bold text-lg" />
+                            Import Compliance Folder
+                          </button>
+                          <button className="bg-[#FFF6F4] hover:bg-[#FFE9E4] text-[#BB7B6A] px-5 py-2.5 rounded-full text-sm font-semibold border border-[#FFC9BA] shadow-sm transition-all duration-200 flex items-center gap-2 active:scale-[0.98]">
+                            <div className="i-ph:copy-bold text-lg" />
+                            Clone Banking Module
+                          </button>
+                        </div> */}
                     </div>
                   )}
                   <StickToBottom
@@ -660,7 +684,7 @@ export const BaseChat = React.memo(
 
                       {/* Action Buttons Row - Above ChatBox */}
                       {!chatStarted && (
-                        <div className="flex justify-center gap-3 mb-4 max-w-chat mx-auto w-full">
+                        <div className="flex justify-center gap-3 mb-10 max-w-chat mx-auto w-full">
                           <LeftActionPanel importChat={importChat} />
                         </div>
                       )}
@@ -718,9 +742,28 @@ export const BaseChat = React.memo(
                       </div>
                     </div>
                   </StickToBottom>
-                  {/* Template Gallery - Below Example Prompts */}
-                  {!chatStarted && <TemplateSection />}
+                  {/* Mobile Template Gallery - Only show on mobile if needed, or hide if preferred */}
+                  {!chatStarted && (
+                    <div className="lg:hidden">
+                      <TemplateSection orientation="horizontal" />
+                    </div>
+                  )}
                 </>
+              )}
+
+              {/* AI Code Generation Disclaimer - Bottom Anchored */}
+              {!chatStarted && (
+                <div className="mt-auto py-6 px-4 text-center z-0 animate-fade-in pointer-events-none select-none">
+                  <div className="flex flex-col gap-1 max-w-chat mx-auto">
+                    <p className="text-[10px] font-semibold text-devonz-elements-textSecondary opacity-40 uppercase tracking-widest leading-none">
+                      © 2026 Alinma Vibe Coder. All Rights Reserved.
+                    </p>
+                    <p className="text-xs font-medium text-devonz-elements-textSecondary opacity-60 leading-tight">
+                      <span className="font-bold opacity-80">Disclaimer:</span> Alinma Vibe Coder uses AI for code
+                      generation. Users are responsible for reviewing results before implementation.
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
           )}
@@ -734,18 +777,27 @@ export const BaseChat = React.memo(
             />
           )}
 
-          {/* Workbench Panel */}
-          <PanelErrorBoundary panelName="Workbench">
-            <Suspense>
-              <Workbench
-                chatStarted={chatStarted}
-                isStreaming={isStreaming}
-                setSelectedElement={setSelectedElement}
-                width={showChat ? workbenchWidth : undefined}
-                fullWidth={!showChat}
-              />
-            </Suspense>
-          </PanelErrorBoundary>
+          {/* Vertical Template Sidebar Overlay - Seamless Integration */}
+          {!chatStarted && (
+            <div className="hidden lg:flex flex-col w-[240px] absolute right-0 top-0 h-full z-10 transition-all duration-500 animate-slide-in-right bg-transparent border-none">
+              <TemplateSection orientation="vertical" />
+            </div>
+          )}
+
+          {/* Workbench Panel (only in chat) */}
+          {chatStarted && (
+            <PanelErrorBoundary panelName="Workbench">
+              <Suspense>
+                <Workbench
+                  chatStarted={chatStarted}
+                  isStreaming={isStreaming}
+                  setSelectedElement={setSelectedElement}
+                  width={showChat ? workbenchWidth : undefined}
+                  fullWidth={!showChat}
+                />
+              </Suspense>
+            </PanelErrorBoundary>
+          )}
         </div>
       </div>
     );
@@ -759,16 +811,21 @@ function ScrollToBottom() {
 
   return (
     !isAtBottom && (
-      <>
-        <div className="sticky bottom-0 left-0 right-0 bg-gradient-to-t from-devonz-elements-background-depth-1 to-transparent h-20 z-10" />
+      <div className="sticky bottom-0 left-0 right-0 z-50 flex justify-center pb-6 pointer-events-none">
         <button
-          className="sticky z-50 bottom-0 left-0 right-0 text-4xl rounded-lg px-1.5 py-0.5 flex items-center justify-center mx-auto gap-2 bg-devonz-elements-background-depth-2 border border-devonz-elements-borderColor text-devonz-elements-textPrimary text-sm"
+          className={cn(
+            'flex items-center gap-2 px-4 py-2 rounded-full pointer-events-auto',
+            'bg-devonz-elements-background-depth-3/95 backdrop-blur-md',
+            'border border-devonz-elements-borderColor shadow-premium transition-all duration-200',
+            'text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary',
+            'text-xs font-bold uppercase tracking-wider hover:-translate-y-0.5 active:scale-95 animate-fade-in',
+          )}
           onClick={() => scrollToBottom()}
         >
-          Go to last message
-          <span className="i-ph:arrow-down animate-bounce" />
+          <span>Go to last message</span>
+          <div className="i-ph:arrow-down w-3.5 h-3.5 animate-bounce" />
         </button>
-      </>
+      </div>
     )
   );
 }
