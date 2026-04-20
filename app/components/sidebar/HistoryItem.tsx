@@ -71,8 +71,8 @@ export function HistoryItem({
   return (
     <div
       className={cn(
-        'group rounded-lg text-sm text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary hover:bg-devonz-elements-background-depth-3/50 overflow-hidden flex justify-between items-center px-3 py-2.5 transition-colors',
-        { 'text-devonz-elements-textPrimary bg-accent-500/10 border-l-2 border-accent-500': isActiveChat },
+        'group rounded-xl text-sm text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary hover:bg-white/60 dark:hover:bg-white/5 overflow-hidden flex justify-between items-center px-4 py-3 transition-all duration-200 mb-1',
+        { 'text-devonz-elements-textPrimary bg-white/60 dark:bg-white/5 shadow-sm font-semibold': isActiveChat },
         { 'cursor-pointer': selectionMode },
       )}
       onClick={selectionMode ? handleItemClick : undefined}
@@ -92,7 +92,7 @@ export function HistoryItem({
         <form onSubmit={handleSubmit} className="flex-1 flex items-center gap-2">
           <input
             type="text"
-            className="flex-1 bg-devonz-elements-background-depth-3 text-devonz-elements-textPrimary rounded-md px-3 py-1.5 text-sm border border-devonz-elements-borderColor focus:outline-none focus:ring-1 focus:ring-accent-500/50"
+            className="flex-1 bg-devonz-elements-background-depth-3 text-devonz-elements-textPrimary rounded-md px-3 py-1.5 text-sm border border-devonz-elements-borderColor focus:outline-none focus:ring-1 focus:ring-[#E68D7B]/50"
             autoFocus
             value={currentDescription}
             onChange={handleChange}
@@ -103,7 +103,7 @@ export function HistoryItem({
           <button
             type="submit"
             aria-label="Save name"
-            className="i-ph:check h-4 w-4 text-gray-500 hover:text-blue-500 transition-colors"
+            className="i-ph:check h-4 w-4 text-devonz-elements-textTertiary hover:text-[#E68D7B] transition-colors"
             onMouseDown={handleSubmit}
           />
         </form>
@@ -149,7 +149,7 @@ export function HistoryItem({
               <ChatActionButton
                 toolTipContent="Delete"
                 icon="i-ph:trash h-4 w-4"
-                className="hover:text-red-500 dark:hover:text-red-400"
+                className="hover:text-rose-600 dark:hover:text-rose-400"
                 onClick={handleDeleteClick}
               />
             </div>
@@ -180,7 +180,7 @@ function ChatActionButton({
         ref={ref}
         type="button"
         aria-label={toolTipContent}
-        className={`text-devonz-elements-textTertiary hover:text-blue-500 transition-colors ${icon} ${className ? className : ''}`}
+        className={`text-devonz-elements-textTertiary hover:text-devonz-elements-textPrimary transition-colors ${icon} ${className ? className : ''}`}
         onClick={onClick}
       />
     </WithTooltip>
