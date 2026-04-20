@@ -321,12 +321,12 @@ export const Menu = () => {
         initial="closed"
         animate={open ? 'open' : 'closed'}
         variants={menuVariants}
-        style={{ width: '340px' }}
+        style={{ width: '340px', backgroundColor: 'var(--devonz-elements-bg-depth-1)' }}
         className={cn(
           'flex selection-accent flex-col side-menu fixed top-0 h-full rounded-r-2xl',
-          'bg-devonz-elements-background-depth-1 border-r border-devonz-elements-borderColor',
-          'shadow-xl backdrop-blur-sm text-sm',
-          isSettingsOpen ? 'z-40' : 'z-sidebar',
+          'border-none shadow-premium transition-theme',
+          'text-sm rounded-r-2xl border-r border-devonz-elements-borderColor',
+          'z-sidebar',
         )}
       >
         <PanelErrorBoundary panelName="sidebar">
