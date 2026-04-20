@@ -113,8 +113,8 @@ const NotificationsTab = () => {
       case 'info':
         return {
           icon: 'i-ph:info',
-          color: 'text-blue-500 dark:text-blue-400',
-          bg: 'hover:bg-blue-500/10 dark:hover:bg-blue-500/20',
+          color: 'text-[#E68D7B] dark:text-[#E68D7B]',
+          bg: 'hover:bg-[#E68D7B]/10 dark:hover:bg-[#E68D7B]/20',
         };
       default:
         return {
@@ -159,14 +159,14 @@ const NotificationsTab = () => {
   };
 
   const filterOptions: { id: FilterType; label: string; icon: string; color: string }[] = [
-    { id: 'all', label: 'All Notifications', icon: 'i-ph:bell', color: '#06B6D4' },
+    { id: 'all', label: 'All Notifications', icon: 'i-ph:bell', color: '#E68D7B' },
     { id: 'system', label: 'System', icon: 'i-ph:gear', color: 'var(--devonz-elements-textTertiary)' },
-    { id: 'update', label: 'Updates', icon: 'i-ph:arrow-circle-up', color: '#06B6D4' },
+    { id: 'update', label: 'Updates', icon: 'i-ph:arrow-circle-up', color: '#E68D7B' },
     { id: 'error', label: 'Errors', icon: 'i-ph:warning-circle', color: '#ef4444' },
     { id: 'warning', label: 'Warnings', icon: 'i-ph:warning', color: '#f59e0b' },
-    { id: 'info', label: 'Information', icon: 'i-ph:info', color: '#3b82f6' },
+    { id: 'info', label: 'Information', icon: 'i-ph:info', color: '#E68D7B' },
     { id: 'provider', label: 'Providers', icon: 'i-ph:robot', color: '#10b981' },
-    { id: 'network', label: 'Network', icon: 'i-ph:wifi-high', color: '#6366f1' },
+    { id: 'network', label: 'Network', icon: 'i-ph:wifi-high', color: 'var(--devonz-elements-textTertiary)' },
   ];
 
   return (
