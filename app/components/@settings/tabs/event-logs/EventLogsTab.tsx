@@ -23,7 +23,7 @@ const logLevelOptions: SelectOption[] = [
     value: 'all',
     label: 'All Types',
     icon: 'i-ph:funnel',
-    color: '#06B6D4',
+    color: '#E68D7B',
   },
   {
     value: 'provider',
@@ -95,9 +95,9 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
     if (log.category === 'api') {
       return {
         icon: 'i-ph:cloud',
-        color: 'text-blue-500 dark:text-blue-400',
-        bg: 'hover:bg-blue-500/10 dark:hover:bg-blue-500/20',
-        badge: 'text-blue-500 bg-blue-50 dark:bg-blue-500/10',
+        color: 'text-amber-500 dark:text-amber-400',
+        bg: 'hover:bg-amber-500/10 dark:hover:bg-amber-500/20',
+        badge: 'text-amber-500 bg-amber-50 dark:bg-amber-500/10',
       };
     }
 
@@ -126,9 +126,9 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
       default:
         return {
           icon: 'i-ph:info',
-          color: 'text-blue-500 dark:text-blue-400',
-          bg: 'hover:bg-blue-500/10 dark:hover:bg-blue-500/20',
-          badge: 'text-blue-500 bg-blue-50 dark:bg-blue-500/10',
+          color: 'text-[#E68D7B]',
+          bg: 'hover:bg-[#E68D7B]/10',
+          badge: 'text-[#E68D7B] bg-[#E68D7B]/5',
         };
     }
   }, [log.level, log.category]);
@@ -174,7 +174,7 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
       return (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 text-xs text-devonz-elements-textTertiary">
-            <span className={details.method === 'GET' ? 'text-green-500' : 'text-blue-500'}>{details.method}</span>
+            <span className={details.method === 'GET' ? 'text-green-500' : 'text-[#E68D7B]'}>{details.method}</span>
             <span>-</span>
             <span>Status: {details.statusCode}</span>
             <span>-</span>
@@ -546,7 +546,7 @@ export function EventLogsTab() {
       };
 
       // Add title and header
-      doc.setFillColor('#06B6D4');
+      doc.setFillColor('#E68D7B');
       doc.rect(0, 0, pageWidth, 50, 'F');
       doc.setTextColor('#FFFFFF');
       doc.setFontSize(24);
@@ -601,13 +601,13 @@ export function EventLogsTab() {
       const leftStats = [
         { label: 'Error Logs', value: stats.error, color: '#DC2626' },
         { label: 'Warning Logs', value: stats.warning, color: '#F59E0B' },
-        { label: 'Info Logs', value: stats.info, color: '#3B82F6' },
+        { label: 'Info Logs', value: stats.info, color: '#E68D7B' },
       ];
 
       const rightStats = [
         { label: 'Debug Logs', value: stats.debug, color: '#6B7280' },
         { label: 'LLM Logs', value: stats.provider, color: '#10B981' },
-        { label: 'API Logs', value: stats.api, color: '#3B82F6' },
+        { label: 'API Logs', value: stats.api, color: '#E68D7B' },
       ];
 
       const colWidth = (pageWidth - 2 * margin) / 2;
@@ -670,7 +670,7 @@ export function EventLogsTab() {
         const textColors: Record<string, string> = {
           error: '#DC2626',
           warning: '#F59E0B',
-          info: '#3B82F6',
+          info: '#E68D7B',
           debug: '#6B7280',
         };
 
