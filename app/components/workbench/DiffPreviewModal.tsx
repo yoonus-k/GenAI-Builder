@@ -125,11 +125,11 @@ function getChangeTypeLabel(type: StagedChange['type']): string {
 function getChangeTypeColor(type: StagedChange['type']): string {
   switch (type) {
     case 'create':
-      return 'bg-green-500/20 text-green-400 border-green-500/30';
+      return 'bg-devonz-elements-icon-success/10 text-devonz-elements-icon-success border-devonz-elements-icon-success/30';
     case 'modify':
-      return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+      return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30';
     case 'delete':
-      return 'bg-red-500/20 text-red-400 border-red-500/30';
+      return 'bg-devonz-elements-icon-error/10 text-devonz-elements-icon-error border-devonz-elements-icon-error/30';
     default:
       return 'bg-gray-500/20 text-devonz-elements-textTertiary border-gray-500/30';
   }
@@ -170,9 +170,9 @@ const DiffLineRow = memo(({ line }: DiffLineRowProps) => {
   const bgColor = useMemo(() => {
     switch (line.type) {
       case 'added':
-        return 'bg-green-500/10';
+        return 'bg-devonz-elements-icon-success/10';
       case 'removed':
-        return 'bg-red-500/10';
+        return 'bg-devonz-elements-icon-error/10';
       default:
         return '';
     }
@@ -181,9 +181,9 @@ const DiffLineRow = memo(({ line }: DiffLineRowProps) => {
   const lineColor = useMemo(() => {
     switch (line.type) {
       case 'added':
-        return 'text-green-400';
+        return 'text-devonz-elements-icon-success';
       case 'removed':
-        return 'text-red-400';
+        return 'text-devonz-elements-icon-error';
       default:
         return 'text-devonz-elements-textSecondary';
     }
@@ -269,8 +269,8 @@ const DiffContent = memo(({ change }: DiffContentProps) => {
           borderBottom: '1px solid var(--devonz-elements-borderColor)',
         }}
       >
-        <span className="text-sm text-green-400">+{stats.added} additions</span>
-        <span className="text-sm text-red-400">-{stats.removed} deletions</span>
+        <span className="text-sm text-devonz-elements-icon-success">+{stats.added} additions</span>
+        <span className="text-sm text-devonz-elements-icon-error">-{stats.removed} deletions</span>
         <span className="text-sm" style={{ color: 'var(--devonz-elements-textSecondary)' }}>
           {diffLines.filter((l) => l.type === 'unchanged').length} unchanged
         </span>
@@ -603,7 +603,12 @@ export const DiffPreviewModal = memo(() => {
                           Skip
                         </Button>
                       )}
-                      <Button variant="destructive" onClick={handleReject} disabled={isProcessing}>
+                      <Button
+                        variant="default"
+                        onClick={handleReject}
+                        disabled={isProcessing}
+                        className="bg-devonz-elements-button-danger-background hover:bg-devonz-elements-button-danger-backgroundHover text-devonz-elements-button-danger-text border-transparent"
+                      >
                         <span className="i-ph:x-circle mr-1.5" />
                         Reject
                       </Button>
@@ -611,7 +616,7 @@ export const DiffPreviewModal = memo(() => {
                         variant="default"
                         onClick={handleAccept}
                         disabled={isProcessing}
-                        className="bg-green-600 hover:bg-green-700 text-white"
+                        className="bg-devonz-elements-button-primary-background hover:bg-devonz-elements-button-primary-backgroundHover text-devonz-elements-button-primary-text"
                       >
                         <span className="i-ph:check-circle mr-1.5" />
                         Accept
