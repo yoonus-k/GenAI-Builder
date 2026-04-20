@@ -171,18 +171,17 @@ ${escapeDevonzTags(file.content)}
           setIsDialogOpen(true);
         }}
         title="Clone a repo"
-        variant="default"
+        variant="ghost"
         size="lg"
         className={cn(
           'flex gap-2',
-          'text-gray-300 hover:text-white',
-          'border border-devonz-elements-borderColor hover:border-purple-500/50',
+          'border border-devonz-elements-borderColor hover:border-devonz-elements-borderColorActive',
           'h-10 px-4 py-2 justify-center',
           'transition-all duration-200 ease-in-out',
-          'hover:shadow-[0_0_12px_rgba(168,85,247,0.15)]',
+          'text-current',
           className,
         )}
-        style={{ backgroundColor: 'var(--devonz-elements-bg-depth-3)', ...style }}
+        style={{ ...style }}
         disabled={!ready || loading}
       >
         Clone a repo
