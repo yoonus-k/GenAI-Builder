@@ -266,7 +266,9 @@ export default function ProjectMemoryTab() {
                     </span>
                   )}
                 </div>
-                {hasUnsavedChanges && <span className="text-xs text-orange-500 font-medium">Unsaved changes</span>}
+                {hasUnsavedChanges && (
+                  <span className="text-xs text-[#E68D7B] font-medium animate-pulse">Unsaved changes</span>
+                )}
               </div>
               <p className="text-sm text-devonz-elements-textSecondary">
                 Create a PROJECT.md file to give the AI persistent instructions that apply to every conversation in this
