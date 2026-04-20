@@ -319,23 +319,17 @@ export default function LocalProvidersTab() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="flex items-center gap-4">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(59, 130, 246, 0.2))',
-                  boxShadow: '0 0 0 1px rgba(6, 182, 212, 0.3)',
-                }}
-              >
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-devonz-elements-background-depth-3 border border-devonz-elements-borderColor">
                 <div className="i-ph:cpu w-6 h-6 text-devonz-elements-item-contentAccent" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-white">Local AI Providers</h2>
-                <p className="text-sm text-gray-400">Configure and manage your local AI models</p>
+                <h2 className="text-2xl font-semibold text-devonz-elements-textPrimary">Local AI Providers</h2>
+                <p className="text-sm text-devonz-elements-textSecondary">Configure and manage your local AI models</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-400">Enable All</span>
+                <span className="text-sm font-medium text-devonz-elements-textSecondary">Enable All</span>
                 <Switch
                   checked={categoryEnabled}
                   onCheckedChange={handleToggleCategory}
