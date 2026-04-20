@@ -400,7 +400,7 @@ export const Menu = () => {
               <DialogRoot open={dialogContent !== null}>
                 {binDates(filteredList).map(({ category, items }) => (
                   <div key={category} className="mt-2 first:mt-0 space-y-1">
-                    <div className="text-xs font-medium text-devonz-elements-textTertiary sticky top-0 z-1 bg-devonz-elements-background-depth-1 px-4 py-1">
+                    <div className="text-[10px] font-bold text-devonz-elements-textTertiary sticky top-0 z-1 bg-devonz-elements-bg-depth-2/95 backdrop-blur-md px-4 py-1.5 uppercase tracking-wider border-b border-devonz-elements-borderColor transition-all">
                       {category}
                     </div>
                     <div className="space-y-0.5 pr-1">
@@ -424,100 +424,120 @@ export const Menu = () => {
                     </div>
                   </div>
                 ))}
-                <Dialog onBackdrop={closeDialog} onClose={closeDialog}>
-                  {dialogContent?.type === 'delete' && (
-                    <>
-                      <div className="p-6 bg-devonz-elements-bg-depth-1">
-                        <DialogTitle className="text-devonz-elements-textPrimary">Delete Chat?</DialogTitle>
-                        <DialogDescription className="mt-2 text-devonz-elements-textSecondary">
-                          <p>
-                            You are about to delete{' '}
-                            <span className="font-medium text-devonz-elements-textPrimary">
-                              {dialogContent.item.description}
-                            </span>
-                          </p>
-                          <p className="mt-2">Are you sure you want to delete this chat?</p>
-                        </DialogDescription>
-                      </div>
-                      <div className="flex justify-end gap-3 px-6 py-4 bg-devonz-elements-bg-depth-2 border-t border-devonz-elements-borderColor">
-                        <DialogButton type="secondary" onClick={closeDialog}>
-                          Cancel
-                        </DialogButton>
-                        <DialogButton
-                          type="danger"
-                          onClick={(event) => {
-                            logger.debug('Dialog delete button clicked for item:', dialogContent.item);
-                            deleteItem(event, dialogContent.item);
-                            closeDialog();
-                          }}
-                        >
-                          Delete
-                        </DialogButton>
-                      </div>
-                    </>
-                  )}
-                  {dialogContent?.type === 'bulkDelete' && (
-                    <>
-                      <div className="p-6 bg-devonz-elements-bg-depth-1">
-                        <DialogTitle className="text-devonz-elements-textPrimary">Delete Selected Chats?</DialogTitle>
-                        <DialogDescription className="mt-2 text-devonz-elements-textSecondary">
-                          <p>
-                            You are about to delete {dialogContent.items.length}{' '}
-                            {dialogContent.items.length === 1 ? 'chat' : 'chats'}:
-                          </p>
-                          <div className="mt-2 max-h-32 overflow-auto border border-devonz-elements-borderColor rounded-md bg-devonz-elements-bg-depth-2 p-2">
-                            <ul className="list-disc pl-5 space-y-1">
-                              {dialogContent.items.map((item) => (
-                                <li key={item.id} className="text-sm">
-                                  <span className="font-medium text-devonz-elements-textPrimary">
-                                    {item.description}
-                                  </span>
-                                </li>
-                              ))}
-                            </ul>
+                {(() => {
+                  const isDark = theme === 'dark';
+                  const dialogBg = isDark ? 'bg-[#0f172a]' : 'bg-white';
+                  const sectionBg = isDark ? 'bg-[#1e293b]' : 'bg-[#f8fafc]';
+                  const textPrimary = isDark ? 'text-white' : 'text-[#1e293b]';
+                  const textSecondary = isDark ? 'text-slate-400' : 'text-slate-600';
+
+                  return (
+                    <Dialog onBackdrop={closeDialog} onClose={closeDialog} className={dialogBg}>
+                      {dialogContent?.type === 'delete' && (
+                        <>
+                          <div className={cn('p-6', dialogBg)}>
+                            <DialogTitle className={cn(textPrimary, 'font-bold')}>Delete Chat?</DialogTitle>
+                            <DialogDescription className={cn('mt-4 leading-relaxed', textSecondary)}>
+                              <p>
+                                You are about to delete{' '}
+                                <span className={cn('font-bold underline decoration-[#E68D7B]/30', textPrimary)}>
+                                  {dialogContent.item.description}
+                                </span>
+                              </p>
+                              <p className="mt-3 text-sm font-medium opacity-90">
+                                Are you sure you want to delete this conversation? This action cannot be undone.
+                              </p>
+                            </DialogDescription>
                           </div>
-                          <p className="mt-3">Are you sure you want to delete these chats?</p>
-                        </DialogDescription>
-                      </div>
-                      <div className="flex justify-end gap-3 px-6 py-4 bg-devonz-elements-bg-depth-2 border-t border-devonz-elements-borderColor">
-                        <DialogButton type="secondary" onClick={closeDialog}>
-                          Cancel
-                        </DialogButton>
-                        <DialogButton
-                          type="danger"
-                          onClick={() => {
-                            /*
-                             * Pass the current selectedItems to the delete function.
-                             * This captures the state at the moment the user confirms.
-                             */
-                            const itemsToDeleteNow = [...selectedItems];
-                            logger.debug(
-                              'Bulk delete confirmed for',
-                              itemsToDeleteNow.length,
-                              'items',
-                              itemsToDeleteNow,
-                            );
-                            deleteSelectedItems(itemsToDeleteNow);
-                            closeDialog();
-                          }}
-                        >
-                          Delete
-                        </DialogButton>
-                      </div>
-                    </>
-                  )}
-                </Dialog>
+                          <div
+                            className={cn(
+                              'flex justify-end gap-3 px-6 py-4 border-t border-devonz-elements-borderColor/20',
+                              sectionBg,
+                            )}
+                          >
+                            <DialogButton type="secondary" onClick={closeDialog}>
+                              Cancel
+                            </DialogButton>
+                            <DialogButton
+                              type="danger"
+                              onClick={(event) => {
+                                logger.debug('Dialog delete button clicked for item:', dialogContent.item);
+                                deleteItem(event, dialogContent.item);
+                                closeDialog();
+                              }}
+                            >
+                              Delete Chat
+                            </DialogButton>
+                          </div>
+                        </>
+                      )}
+                      {dialogContent?.type === 'bulkDelete' && (
+                        <>
+                          <div className={cn('p-6', dialogBg)}>
+                            <DialogTitle className={cn(textPrimary, 'font-bold text-center')}>
+                              Delete Selected Chats?
+                            </DialogTitle>
+                            <DialogDescription className={cn('mt-4 leading-relaxed text-center', textSecondary)}>
+                              <p>
+                                You are about to delete{' '}
+                                <span className="font-extrabold text-[#E68D7B] text-lg">
+                                  {dialogContent.items.length}
+                                </span>{' '}
+                                {dialogContent.items.length === 1 ? 'conversation' : 'conversations'}:
+                              </p>
+                              <div
+                                className={cn(
+                                  'mt-4 max-h-40 overflow-auto border rounded-xl p-3 modern-scrollbar text-left transition-colors',
+                                  isDark ? 'bg-black/20 border-white/5' : 'bg-white border-slate-200 shadow-inner',
+                                )}
+                              >
+                                <ul className="space-y-3">
+                                  {dialogContent.items.map((item) => (
+                                    <li key={item.id} className="text-sm flex items-center gap-3">
+                                      <div className="w-2 h-2 rounded-full bg-[#E68D7B]/60 shadow-[0_0_8px_rgba(230,141,123,0.3)] flex-shrink-0" />
+                                      <span className={cn('font-medium truncate', textPrimary)}>
+                                        {item.description}
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                              <p className="mt-5 text-sm font-semibold">
+                                Are you sure you want to proceed? This cannot be undone.
+                              </p>
+                            </DialogDescription>
+                          </div>
+                          <div
+                            className={cn(
+                              'flex justify-end gap-3 px-6 py-4 border-t border-devonz-elements-borderColor/20',
+                              sectionBg,
+                            )}
+                          >
+                            <DialogButton type="secondary" onClick={closeDialog}>
+                              Cancel
+                            </DialogButton>
+                            <DialogButton
+                              type="danger"
+                              onClick={() => {
+                                const itemsToDeleteNow = [...selectedItems];
+                                logger.debug('Bulk delete confirmed for', itemsToDeleteNow.length, 'items');
+                                deleteSelectedItems(itemsToDeleteNow);
+                                closeDialog();
+                              }}
+                            >
+                              Delete {dialogContent.items.length} Chats
+                            </DialogButton>
+                          </div>
+                        </>
+                      )}
+                    </Dialog>
+                  );
+                })()}
               </DialogRoot>
             </div>
           </div>
         </PanelErrorBoundary>
       </motion.div>
-
-      {isSettingsOpen && (
-        <Suspense>
-          <ControlPanel open={isSettingsOpen} onClose={handleSettingsClose} />
-        </Suspense>
-      )}
     </>
   );
 };
