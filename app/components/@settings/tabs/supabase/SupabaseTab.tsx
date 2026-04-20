@@ -978,9 +978,9 @@ export default function SupabaseTab() {
                             label: 'Database',
                             value: totalDatabase > 0 ? `${totalDatabase} MB` : '--',
                             icon: 'i-ph:database',
-                            color: 'text-blue-500',
-                            bgColor: 'bg-blue-100 dark:bg-blue-900/20',
-                            textColor: 'text-blue-800 dark:text-blue-400',
+                            color: 'text-devonz-elements-item-contentAccent',
+                            bgColor: 'bg-devonz-elements-item-backgroundAccent',
+                            textColor: 'text-devonz-elements-item-contentAccent',
                           },
                           {
                             label: 'Storage',
