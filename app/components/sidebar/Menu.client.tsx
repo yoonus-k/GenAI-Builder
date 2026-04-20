@@ -343,19 +343,16 @@ export const Menu = () => {
           <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
             <div className="p-4 space-y-3">
               <div className="flex gap-2">
-                <a
-                  href="/"
-                  className="flex-1 flex gap-2 items-center bg-accent-500/20 text-accent-400 hover:bg-accent-500/30 rounded-lg px-4 py-2.5 transition-colors border border-accent-500/30"
-                >
+                <a href="/" className="flex-1 premium-button">
                   <span className="inline-block i-ph:plus-circle h-4 w-4" />
-                  <span className="text-sm font-medium">Start new chat</span>
+                  <span>Start new chat</span>
                 </a>
                 <button
                   onClick={toggleSelectionMode}
                   className={cn(
-                    'flex gap-1 items-center rounded-lg px-3 py-2 transition-colors',
+                    'flex gap-1 items-center rounded-lg px-3 py-2 transition-all duration-200',
                     selectionMode
-                      ? 'bg-accent-500 text-white border border-accent-600'
+                      ? 'bg-[#E68D7B] text-white border border-[#BB7B6A] shadow-sm'
                       : 'bg-devonz-elements-background-depth-3 text-devonz-elements-textSecondary hover:bg-devonz-elements-background-depth-4 border border-devonz-elements-borderColor',
                   )}
                   aria-label={selectionMode ? 'Exit selection mode' : 'Enter selection mode'}
