@@ -60,25 +60,32 @@ export function LeftActionPanel({ importChat }: LeftActionPanelProps) {
   };
 
   const buttonBaseClass = cn(
-    '!flex w-full items-center gap-2 justify-center',
+    'flex w-full items-center gap-2.5 justify-center',
     'text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary',
-    'border border-devonz-elements-borderColor hover:border-devonz-elements-borderColorActive',
-    'h-10 px-4 py-2',
-    'transition-all duration-200 ease-in-out',
-    'rounded-lg text-sm font-medium',
-    'hover:bg-devonz-elements-bg-depth-3',
+    'bg-[var(--devonz-elements-button-secondary-background)] hover:bg-[var(--devonz-elements-button-secondary-backgroundHover)] backdrop-blur-md',
+    'border border-devonz-elements-borderColor hover:border-rose-200 dark:hover:border-rose-900',
+    'h-11 px-6 py-2.5',
+    'transition-all duration-300',
+    'rounded-full text-base font-semibold',
+    'active:scale-[0.97]',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-rose-400',
+    'shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]',
+    'disabled:pointer-events-none disabled:opacity-50',
   );
 
   const primaryButtonClass = cn(
-    '!flex w-full items-center gap-2 justify-center',
-    'text-devonz-elements-textPrimary',
-    'bg-gradient-to-r from-[#1e3a5f] to-[#2d4a6f]',
-    'border border-devonz-elements-borderColor hover:border-devonz-elements-borderColorActive',
-    'h-10 px-4 py-2',
-    'transition-all duration-200 ease-in-out',
-    'rounded-lg text-sm font-medium',
-    'hover:from-[#2a4a6f] hover:to-[#3d5a7f]',
-    'shadow-[0_2px_8px_rgba(30,58,95,0.3)]',
+    'flex w-full items-center gap-2.5 justify-center',
+    'h-11 px-6 py-2.5',
+    'rounded-full text-base font-semibold',
+    'text-[#FFFFFF] !text-white', // Force white text for premium contrast
+    'bg-[var(--devonz-elements-button-primary-background)] hover:bg-[#BB7B6A]',
+    'bg-gradient-to-br from-[#FFA08C] to-[#E68D7B]', // Direct gradient for guaranteed rendering
+    'border border-white/20 hover:border-white/40',
+    'transition-all duration-300',
+    'active:scale-[0.97]',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#FFA08C]',
+    'shadow-md hover:shadow-[0_12px_30px_rgba(187,123,106,0.3)]',
+    'disabled:pointer-events-none disabled:opacity-50',
   );
 
   return (
@@ -94,7 +101,7 @@ export function LeftActionPanel({ importChat }: LeftActionPanelProps) {
       />
 
       {/* Import Chat Button */}
-      <div className="flex h-10">
+      <div className="flex h-11">
         <Button
           onClick={() => {
             const input = document.getElementById('chat-import-left');
@@ -102,7 +109,7 @@ export function LeftActionPanel({ importChat }: LeftActionPanelProps) {
           }}
           variant="default"
           className={buttonBaseClass}
-          style={{ backgroundColor: 'var(--devonz-elements-bg-depth-3)', width: '100%', height: '100%' }}
+          style={{ width: '100%', height: '100%' }}
         >
           <span className="i-ph:upload-simple w-4 h-4" />
           <span>Import Chat</span>
@@ -110,16 +117,16 @@ export function LeftActionPanel({ importChat }: LeftActionPanelProps) {
       </div>
 
       {/* Import Folder Button */}
-      <div className="flex h-10">
+      <div className="flex h-11">
         <ImportFolderButton
           importChat={importChat}
           className={buttonBaseClass}
-          style={{ backgroundColor: 'var(--devonz-elements-bg-depth-3)', width: '100%', height: '100%' }}
+          style={{ width: '100%', height: '100%' }}
         />
       </div>
 
       {/* Clone a Repo Button - Primary/Highlighted */}
-      <div className="flex h-10">
+      <div className="flex h-11">
         <Suspense>
           <GitCloneButton
             importChat={importChat}
