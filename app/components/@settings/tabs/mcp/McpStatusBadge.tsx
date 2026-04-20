@@ -6,10 +6,12 @@ export default function McpStatusBadge({ status }: { status: 'checking' | 'avail
 
     const config = {
       checking: {
-        styles: `${base} bg-blue-100 text-blue-800 dark:bg-blue-900/80 dark:text-blue-200`,
+        styles: `${base} bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300`,
         label: 'Checking...',
         ariaLabel: 'Checking server status',
-        icon: <span className="i-svg-spinners:90-ring-with-bg w-3 h-3 text-current animate-spin" aria-hidden="true" />,
+        icon: (
+          <span className="i-svg-spinners:90-ring-with-bg w-3 h-3 text-[#E68D7B] animate-spin" aria-hidden="true" />
+        ),
       },
       available: {
         styles: `${base} bg-green-100 text-green-800 dark:bg-green-900/80 dark:text-green-200`,
