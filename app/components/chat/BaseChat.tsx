@@ -14,6 +14,7 @@ import { clientLazy } from '~/utils/react';
 
 import { cn } from '~/utils/cn';
 import { PROVIDER_LIST } from '~/utils/constants';
+import { themeStore } from '~/lib/stores/theme';
 import { getApiKeysFromCookies } from './APIKeyManager';
 import { encryptApiKeyValue, isEncryptedValue } from '~/lib/api/encrypt-value';
 import Cookies from 'js-cookie';
@@ -197,6 +198,7 @@ export const BaseChat = React.memo(
     const [qrModalOpen, setQrModalOpen] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
     const [isHydrated, setIsHydrated] = useState(false);
+    const theme = useStore(themeStore);
 
     const handleResize = useCallback(
       (deltaX: number) => {
