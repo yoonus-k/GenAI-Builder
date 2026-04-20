@@ -143,11 +143,15 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
         {/* Sliding track — two copies side by side, translated via CSS */}
         <div
           ref={trackRef}
-          className="flex flex-nowrap pb-2"
+          className={cn('flex pb-2', {
+            'flex-nowrap': !isVertical,
+            'flex-col': isVertical,
+          })}
           style={{
             gap: GAP,
-            width: 'max-content',
-            animation: `template-marquee ${durationSec}s linear infinite`,
+            width: isVertical ? '100%' : 'max-content',
+            height: isVertical ? 'max-content' : 'auto',
+            animation: `template-marquee-${orientation} ${durationSec}s linear infinite`,
             animationPlayState: paused ? 'paused' : 'running',
           }}
         >
@@ -159,12 +163,14 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
                 key={`${template.id}-${idx}`}
                 type="button"
                 onClick={() => navigate(`/templates?selected=${template.id}`)}
-                className="rounded-lg overflow-hidden border border-[#333333] hover:border-[#555555] transition-all duration-200 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#555555]"
+                className="rounded-2xl overflow-hidden bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl transition-all duration-300 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#E68D7B]/20 hover:-translate-y-1 hover:shadow-lg"
                 style={{
-                  flex: `0 0 ${CARD_WIDTH}px`,
-                  height: 112,
-                  backgroundColor: '#1a1a1a',
+                  flex: isVertical ? `0 0 ${CARD_HEIGHT}px` : `0 0 ${cardWidth}px`,
+                  width: isVertical ? '100%' : `${cardWidth}px`,
+                  height: isVertical ? `${CARD_HEIGHT}px` : '120px',
                   position: 'relative',
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
+                  boxShadow: '0 4px 20px -10px rgba(0,0,0,0.1)',
                 }}
                 aria-label={`Open ${template.name} template`}
               >
@@ -173,7 +179,7 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
                   src={`/screenshots/${template.id}.png`}
                   alt={`${template.name} preview`}
                   loading="lazy"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
                   onError={(e) => {
                     const target = e.currentTarget;
@@ -189,12 +195,14 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
 
                 {/* Fallback icon (hidden by default) */}
                 <div
-                  className="items-center justify-center text-3xl"
+                  className={cn('items-center justify-center surface-2', {
+                    'text-3xl': !isVertical,
+                    'text-4xl': isVertical,
+                  })}
                   style={{
                     display: 'none',
                     position: 'absolute',
                     inset: 0,
-                    background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)',
                   }}
                   aria-hidden="true"
                 >
@@ -203,15 +211,14 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
 
                 {/* Category badge — top-right */}
                 <span
-                  className="text-[10px] font-medium px-1.5 py-0.5 rounded"
+                  className="text-[10px] font-bold px-2 py-0.5 rounded-full z-10"
                   style={{
                     position: 'absolute',
-                    top: 6,
-                    right: 6,
+                    top: 8,
+                    right: 8,
                     color: colors.text,
                     backgroundColor: colors.bg,
-                    backdropFilter: 'blur(4px)',
-                    zIndex: 2,
+                    backdropFilter: 'blur(8px)',
                   }}
                 >
                   {label}
@@ -219,17 +226,26 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
 
                 {/* Name overlay — bottom */}
                 <div
-                  className="px-2 py-1.5"
+                  className={cn('px-3 z-10', {
+                    'py-2': !isVertical,
+                    'py-3': isVertical,
+                  })}
                   style={{
                     position: 'absolute',
                     bottom: 0,
                     left: 0,
                     width: '100%',
-                    background: 'linear-gradient(transparent, rgba(0,0,0,0.85))',
-                    zIndex: 2,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)',
                   }}
                 >
-                  <span className="text-xs font-medium text-white truncate block">{template.name}</span>
+                  <span
+                    className={cn('font-bold text-white truncate block drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]', {
+                      'text-xs': !isVertical,
+                      'text-[13px]': isVertical,
+                    })}
+                  >
+                    {template.name}
+                  </span>
                 </div>
               </button>
             );
@@ -239,31 +255,30 @@ export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 
 
       {/* Keyframes + scrollbar-hide */}
       <style>{`
-        @keyframes template-marquee {
+        @keyframes template-marquee-horizontal {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-${setWidth}px); }
+          100% { transform: translateX(-${totalSize}px); }
+        }
+        @keyframes template-marquee-vertical {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-${totalSize}px); }
         }
         .template-carousel::-webkit-scrollbar { display: none; }
       `}</style>
 
       {/* View all button — below carousel */}
-      <div className="flex justify-center mt-3">
-        <Link
-          to="/templates"
-          prefetch="intent"
-          className="text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 group border border-[#333333] hover:border-[#555555] hover:bg-[#2a2a2a] no-underline"
-          style={{ color: '#9ca3af', backgroundColor: '#1a1a1a' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = '#ffffff';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = '#9ca3af';
-          }}
-        >
-          View All Templates
-          <div className="i-ph:arrow-right text-xs transition-transform duration-200 group-hover:translate-x-0.5" />
-        </Link>
-      </div>
+      {!isVertical && (
+        <div className="flex justify-center mt-5">
+          <Link
+            to="/templates"
+            prefetch="intent"
+            className="text-xs font-bold px-6 py-2.5 rounded-full transition-all duration-300 flex items-center gap-2 group bg-[var(--devonz-elements-button-secondary-background)] hover:bg-[var(--devonz-elements-button-secondary-backgroundHover)] backdrop-blur-md text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary shadow-sm hover:shadow-md no-underline border border-devonz-elements-borderColor active:scale-95"
+          >
+            View All Templates
+            <div className="i-ph:arrow-right text-xs transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
