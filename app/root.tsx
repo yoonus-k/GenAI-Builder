@@ -126,7 +126,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Suspense fallback={<>{children}</>}>
             <DndWrapper>{children}</DndWrapper>
           </Suspense>
-          <Toaster position="bottom-right" theme="dark" richColors closeButton duration={3000} />
+          <Toaster
+            position="bottom-right"
+            theme={theme}
+            richColors
+            closeButton
+            duration={3000}
+            toastOptions={{
+              className: 'glass-panel border-none shadow-lg',
+            }}
+          />
         </div>
         <ScrollRestoration />
         <Scripts />
