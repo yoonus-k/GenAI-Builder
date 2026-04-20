@@ -153,16 +153,16 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({ temp
       if (iframeError) {
         return (
           <div
-            className="w-full h-full flex flex-col items-center justify-center gap-4"
-            style={{ backgroundColor: '#0a0a0a', minHeight: '600px' }}
+            className="w-full h-full flex flex-col items-center justify-center gap-4 bg-devonz-elements-background-depth-1"
+            style={{ minHeight: '600px' }}
           >
-            <div className="i-ph:warning-circle text-4xl text-[#9ca3af]" />
-            <p className="text-sm text-[#9ca3af]">This site cannot be previewed inline.</p>
+            <div className="i-ph:warning-circle text-4xl text-devonz-elements-textSecondary" />
+            <p className="text-sm text-devonz-elements-textSecondary">This site cannot be previewed inline.</p>
             <a
               href={vercelUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#3b82f6] hover:bg-[#2563eb] text-white"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-devonz-elements-button-primary-background hover:bg-devonz-elements-button-primary-backgroundHover text-devonz-elements-button-primary-text"
             >
               Open in New Tab →
             </a>
@@ -171,12 +171,12 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({ temp
       }
 
       return (
-        <div className="relative w-full h-full" style={{ backgroundColor: '#0a0a0a', minHeight: '600px' }}>
+        <div className="relative w-full h-full bg-devonz-elements-background-depth-1" style={{ minHeight: '600px' }}>
           {iframeLoading && (
-            <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: '#0a0a0a' }}>
+            <div className="absolute inset-0 flex items-center justify-center bg-devonz-elements-background-depth-1">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-8 h-8 border-2 border-[#3b82f6] border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm text-[#9ca3af]">Loading preview…</p>
+                <div className="w-8 h-8 border-2 border-accent-500 border-t-transparent rounded-full animate-spin" />
+                <p className="text-sm text-devonz-elements-textSecondary">Loading preview…</p>
               </div>
             </div>
           )}
@@ -194,12 +194,12 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({ temp
 
     return (
       <div
-        className="w-full h-full flex flex-col items-center justify-center gap-6"
-        style={{ backgroundColor: '#0a0a0a', minHeight: '600px' }}
+        className="w-full h-full flex flex-col items-center justify-center gap-6 bg-devonz-elements-background-depth-1"
+        style={{ minHeight: '600px' }}
       >
-        <div className={`${template.icon} text-5xl text-cyan-400`} />
-        <p className="text-lg font-medium text-white">{template.name}</p>
-        <p className="text-sm text-[#9ca3af]">Clone to customize this project</p>
+        <div className={`${template.icon} text-5xl text-accent-400`} />
+        <p className="text-lg font-medium text-devonz-elements-textPrimary">{template.name}</p>
+        <p className="text-sm text-devonz-elements-textSecondary">Clone to customize this project</p>
       </div>
     );
   };
@@ -218,50 +218,42 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({ temp
     >
       <div
         ref={modalRef}
-        className="relative w-full max-w-[90vw] max-h-[95vh] rounded-xl overflow-hidden flex flex-col"
-        style={{ backgroundColor: '#1a1a1a', border: '1px solid #333333' }}
+        className="relative w-full max-w-[90vw] max-h-[95vh] rounded-xl overflow-hidden flex flex-col bg-devonz-elements-background-depth-2 border border-devonz-elements-borderColor shadow-premium"
       >
         {/* Header */}
-        <div
-          className="flex items-center justify-between px-5 py-4 flex-shrink-0"
-          style={{ borderBottom: '1px solid #333333' }}
-        >
+        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0 border-b border-devonz-elements-borderColor">
           <div className="flex items-center gap-3 min-w-0">
-            <div className={`${template.icon} text-xl text-cyan-400 flex-shrink-0`} />
+            <div className={`${template.icon} text-xl text-accent-400 flex-shrink-0`} />
             <div className="min-w-0">
-              <h2 id="template-modal-title" className="text-lg font-semibold text-white truncate">
+              <h2 id="template-modal-title" className="text-lg font-semibold text-devonz-elements-textPrimary truncate">
                 {template.name}
               </h2>
-              <p className="text-sm text-[#9ca3af]">{CATEGORY_LABELS[template.category] || template.category}</p>
+              <p className="text-sm text-devonz-elements-textSecondary">
+                {CATEGORY_LABELS[template.category] || template.category}
+              </p>
             </div>
           </div>
           <button
             ref={closeButtonRef}
             onClick={onClose}
             aria-label="Close preview"
-            className="flex items-center justify-center w-8 h-8 rounded-lg transition-colors flex-shrink-0 bg-[#2a2a2a] hover:bg-[#333333]"
+            className="flex items-center justify-center w-8 h-8 rounded-lg transition-colors flex-shrink-0 bg-devonz-elements-background-depth-3 hover:bg-devonz-elements-background-depth-4"
           >
-            <div className="i-ph:x text-lg text-[#9ca3af]" />
+            <div className="i-ph:x text-lg text-devonz-elements-textSecondary" />
           </button>
         </div>
 
         {/* Preview Area */}
-        <div className="flex-1 overflow-hidden relative" style={{ backgroundColor: '#0a0a0a' }}>
-          {renderPreview()}
-        </div>
+        <div className="flex-1 overflow-hidden relative bg-devonz-elements-background-depth-1">{renderPreview()}</div>
 
         {/* Footer */}
-        <div
-          className="flex items-center justify-between px-5 py-4 flex-shrink-0"
-          style={{ borderTop: '1px solid #333333', backgroundColor: '#141414' }}
-        >
+        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0 border-t border-devonz-elements-borderColor bg-devonz-elements-background-depth-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-sm text-[#9ca3af] mr-2 hidden sm:block">{template.description}</p>
+            <p className="text-sm text-devonz-elements-textSecondary mr-2 hidden sm:block">{template.description}</p>
             {template.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-0.5 text-xs rounded-full text-[#9ca3af]"
-                style={{ backgroundColor: '#2a2a2a' }}
+                className="px-2 py-0.5 text-xs rounded-full text-devonz-elements-textSecondary bg-devonz-elements-background-depth-1"
               >
                 {tag}
               </span>
@@ -271,7 +263,7 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({ temp
             {template.vercelUrl?.trim() && (
               <button
                 onClick={handlePreview}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#2a2a2a] hover:bg-[#333333] text-white border border-[#333333]"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-devonz-elements-background-depth-1 hover:bg-devonz-elements-background-depth-4 text-devonz-elements-textPrimary border border-devonz-elements-borderColor"
               >
                 <div className={hasIframePreview ? 'i-ph:arrow-square-out text-base' : 'i-ph:eye text-base'} />
                 {hasIframePreview ? 'Open in Browser' : 'Preview'}
@@ -279,7 +271,7 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({ temp
             )}
             <button
               onClick={handleUseTemplate}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-[#3b82f6] hover:bg-[#2563eb] text-white"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-devonz-elements-button-primary-background hover:bg-devonz-elements-button-primary-backgroundHover text-devonz-elements-button-primary-text"
             >
               <div className="i-ph:code text-base" />
               Use Template
