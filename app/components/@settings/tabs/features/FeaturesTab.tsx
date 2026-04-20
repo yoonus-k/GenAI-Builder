@@ -66,10 +66,12 @@ const FeatureCard = memo(
             <div className="flex items-center gap-2">
               <h4 className="font-medium text-devonz-elements-textPrimary">{feature.title}</h4>
               {feature.beta && (
-                <span className="px-2 py-0.5 text-xs rounded-full bg-blue-500/10 text-blue-500 font-medium">Beta</span>
+                <span className="px-2 py-0.5 text-[10px] rounded-full bg-[#E68D7B]/10 text-[#E68D7B] font-bold uppercase tracking-wider">
+                  Beta
+                </span>
               )}
               {feature.experimental && (
-                <span className="px-2 py-0.5 text-xs rounded-full bg-orange-500/10 text-orange-500 font-medium">
+                <span className="px-2 py-0.5 text-[10px] rounded-full bg-slate-500/10 text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
                   Experimental
                 </span>
               )}
@@ -433,13 +435,12 @@ export default function FeaturesTab() {
           <button
             key={tab.id}
             onClick={() => setActiveSection(tab.id)}
-            className="px-4 py-2 text-sm font-medium rounded-t-lg transition-colors"
-            style={{
-              backgroundColor: activeSection === tab.id ? 'var(--devonz-elements-bg-depth-3)' : 'transparent',
-              color:
-                activeSection === tab.id ? 'var(--devonz-elements-textPrimary)' : 'var(--devonz-elements-textTertiary)',
-              borderBottom: activeSection === tab.id ? '2px solid #06B6D4' : '2px solid transparent',
-            }}
+            className={cn(
+              'px-4 py-2 text-sm font-medium rounded-t-lg transition-all duration-200',
+              activeSection === tab.id
+                ? 'bg-devonz-elements-background-depth-3 text-devonz-elements-textPrimary border-b-2 border-[#E68D7B]'
+                : 'text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary hover:bg-devonz-elements-background-depth-2',
+            )}
           >
             {tab.label}
           </button>
