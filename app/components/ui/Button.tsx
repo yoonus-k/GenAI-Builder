@@ -8,7 +8,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-devonz-elements-bg-depth-3 text-devonz-elements-textPrimary hover:bg-devonz-elements-bg-depth-4',
-        destructive: 'bg-red-600 text-white hover:bg-red-700',
+        destructive: 'bg-rose-600 text-white hover:bg-rose-700 active:scale-[0.98]',
         outline:
           'border border-devonz-elements-borderColor bg-transparent hover:bg-devonz-elements-bg-depth-3 text-devonz-elements-textPrimary',
         secondary: 'bg-devonz-elements-bg-depth-3 text-devonz-elements-textPrimary hover:bg-devonz-elements-bg-depth-4',
