@@ -50,14 +50,12 @@ export function ChatModeSelector({ chatMode, setChatMode, planMode, setPlanMode 
         <IconButton
           title="Chat mode"
           className={cn(
-            'transition-all flex items-center gap-1 px-1.5',
-            activeMode !== 'build'
-              ? 'bg-devonz-elements-item-backgroundAccent text-devonz-elements-item-contentAccent'
-              : 'bg-devonz-elements-item-backgroundDefault text-devonz-elements-item-contentDefault',
+            'transition-colors flex items-center gap-1.5 px-1.5 rounded-md !bg-transparent hover:!bg-transparent',
+            activeMode !== 'build' ? 'text-[#BB7B6A]' : 'text-[#64748b] hover:text-[#1e293b]',
           )}
         >
           <div className={cn(activeModeConfig.icon, 'text-xl')} />
-          <span className="text-xs">{activeModeConfig.label}</span>
+          <span className="text-sm font-medium">{activeModeConfig.label}</span>
         </IconButton>
       </Popover.Trigger>
       <Popover.Portal>
@@ -65,19 +63,18 @@ export function ChatModeSelector({ chatMode, setChatMode, planMode, setPlanMode 
           sideOffset={8}
           side="top"
           align="start"
-          className="rounded-lg z-workbench border border-[#1e293b] overflow-hidden min-w-[200px]"
-          style={{ backgroundColor: '#0f1219', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}
+          className="min-w-[220px] rounded-xl z-workbench overflow-hidden border border-[#D8D6FE] bg-[#F1F0FF] dark:border-[#1e293b] dark:bg-[#0f1219] shadow-[0_14px_34px_-18px_rgba(0,33,52,0.35)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
         >
-          <div className="p-1" style={{ backgroundColor: '#0f1219' }}>
+          <div className="p-1">
             {modes.map((mode) => (
               <button
                 key={mode.id}
                 className={cn(
-                  'w-full flex items-center gap-3 px-3 py-2 rounded-md text-left transition-colors border-none',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-devonz-elements-focus',
+                  'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors border border-transparent',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A39EFF]',
                   activeMode === mode.id
-                    ? 'bg-devonz-elements-item-backgroundAccent text-devonz-elements-item-contentAccent'
-                    : 'bg-transparent text-[#9ca3af] hover:bg-[#1a1f2e] hover:text-white',
+                    ? 'bg-[#FFF6F4] text-[#BB7B6A] border-[#FFD8CF] dark:bg-[rgba(255,160,140,0.15)] dark:text-[#FFA08C] dark:border-[rgba(255,160,140,0.28)]'
+                    : 'bg-transparent text-[#475569] hover:bg-[#E8E6FF] hover:text-[#002134] dark:text-[#9ca3af] dark:hover:bg-[#1a1f2e] dark:hover:text-white',
                 )}
                 onClick={() => handleSelect(mode.id)}
               >
@@ -90,7 +87,7 @@ export function ChatModeSelector({ chatMode, setChatMode, planMode, setPlanMode 
               </button>
             ))}
           </div>
-          <Popover.Arrow className="fill-[#0f1219]" />
+          <Popover.Arrow className="fill-[#F1F0FF] dark:fill-[#0f1219]" />
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
