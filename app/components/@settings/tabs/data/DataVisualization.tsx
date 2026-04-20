@@ -109,29 +109,29 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
   const getChartColors = (index: number) => {
     // Define color palettes based on Devonz design tokens
     const baseColors = [
-      // Indigo
+      // Copper-Rose
       {
-        base: getThemeColor('--devonz-elements-button-primary-text'),
+        base: '#E68D7B',
       },
 
-      // Pink
+      // Slate
       {
-        base: isDarkMode ? 'rgb(244, 114, 182)' : 'rgb(236, 72, 153)',
+        base: '#1E293B',
       },
 
-      // Green
+      // Warm Amber (for variance)
       {
-        base: getThemeColor('--devonz-elements-icon-success'),
+        base: '#FFA08C',
       },
 
-      // Yellow
+      // Success Green (brand-aligned)
       {
-        base: isDarkMode ? 'rgb(250, 204, 21)' : 'rgb(234, 179, 8)',
+        base: '#10B981',
       },
 
-      // Blue
+      // Slate-Light
       {
-        base: isDarkMode ? 'rgb(56, 189, 248)' : 'rgb(14, 165, 233)',
+        base: '#475569',
       },
     ];
 
@@ -333,7 +333,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-devonz-elements-textPrimary mb-4">Total Chats</h3>
           <div className={statClasses}>
-            <div className="i-ph-chats-duotone w-8 h-8 text-indigo-500 dark:text-indigo-400" />
+            <div className="i-ph-chats-duotone w-8 h-8 text-[#E68D7B]" />
             <span>{chats.length}</span>
           </div>
         </div>
@@ -341,7 +341,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-devonz-elements-textPrimary mb-4">Total Messages</h3>
           <div className={statClasses}>
-            <div className="i-ph-chat-text-duotone w-8 h-8 text-pink-500 dark:text-pink-400" />
+            <div className="i-ph-chat-text-duotone w-8 h-8 text-[#FFA08C]" />
             <span>{Object.values(messagesByRole).reduce((sum, count) => sum + count, 0)}</span>
           </div>
         </div>
@@ -349,7 +349,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         <div className={cardClasses}>
           <h3 className="text-lg font-medium text-devonz-elements-textPrimary mb-4">Avg. Messages/Chat</h3>
           <div className={statClasses}>
-            <div className="i-ph-chart-bar-duotone w-8 h-8 text-green-500 dark:text-green-400" />
+            <div className="i-ph-chart-bar-duotone w-8 h-8 text-[#10B981]" />
             <span>{averageMessagesPerChat.toFixed(1)}</span>
           </div>
         </div>
