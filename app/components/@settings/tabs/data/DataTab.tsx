@@ -244,13 +244,12 @@ export function DataTab() {
           <button
             key={tab.id}
             onClick={() => setActiveSection(tab.id)}
-            className="px-4 py-2 text-sm font-medium rounded-t-lg transition-colors"
-            style={{
-              backgroundColor: activeSection === tab.id ? 'var(--devonz-elements-bg-depth-3)' : 'transparent',
-              color:
-                activeSection === tab.id ? 'var(--devonz-elements-textPrimary)' : 'var(--devonz-elements-textTertiary)',
-              borderBottom: activeSection === tab.id ? '2px solid #06B6D4' : '2px solid transparent',
-            }}
+            className={cn(
+              'px-4 py-2 text-sm font-medium rounded-t-lg transition-all duration-200',
+              activeSection === tab.id
+                ? 'bg-devonz-elements-background-depth-3 text-devonz-elements-textPrimary border-b-2 border-[#E68D7B]'
+                : 'text-devonz-elements-textSecondary hover:text-devonz-elements-textPrimary hover:bg-devonz-elements-background-depth-2',
+            )}
           >
             {tab.label}
           </button>
@@ -312,7 +311,7 @@ export function DataTab() {
       {/* Chats Section */}
       {activeSection === 'chats' && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-white">Chats</h2>
+          <h2 className="text-xl font-semibold mb-4 text-devonz-elements-textPrimary">Chats</h2>
           {dbLoading ? (
             <div className="flex items-center justify-center p-4">
               <div className="i-ph-spinner-gap-bold animate-spin w-6 h-6 mr-2" />
@@ -323,10 +322,10 @@ export function DataTab() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center mb-2">
-                    <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                       <div className="i-ph-download-duotone w-5 h-5" />
                     </motion.div>
-                    <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                    <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                       Export All Chats
                     </CardTitle>
                   </div>
@@ -387,10 +386,10 @@ export function DataTab() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center mb-2">
-                    <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                       <div className="i-ph:list-checks w-5 h-5" />
                     </motion.div>
-                    <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                    <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                       Export Selected Chats
                     </CardTitle>
                   </div>
@@ -424,12 +423,10 @@ export function DataTab() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center mb-2">
-                    <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                       <div className="i-ph-upload-duotone w-5 h-5" />
                     </motion.div>
-                    <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
-                      Import Chats
-                    </CardTitle>
+                    <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">Import Chats</CardTitle>
                   </div>
                   <CardDescription>Import chats from a JSON file.</CardDescription>
                 </CardHeader>
@@ -462,13 +459,13 @@ export function DataTab() {
                 <CardHeader>
                   <div className="flex items-center mb-2">
                     <motion.div
-                      className="text-red-500 dark:text-red-400 mr-2"
+                      className="text-devonz-elements-item-contentAccent dark:text-rose-400 mr-2"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
                       <div className="i-ph-trash-duotone w-5 h-5" />
                     </motion.div>
-                    <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                    <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                       Delete All Chats
                     </CardTitle>
                   </div>
@@ -506,15 +503,15 @@ export function DataTab() {
       {/* Settings Section */}
       {activeSection === 'settings' && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-white">Settings</h2>
+          <h2 className="text-xl font-semibold mb-4 text-devonz-elements-textPrimary">Settings</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-download-duotone w-5 h-5" />
                   </motion.div>
-                  <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                  <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                     Export All Settings
                   </CardTitle>
                 </div>
@@ -548,10 +545,10 @@ export function DataTab() {
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-filter-duotone w-5 h-5" />
                   </motion.div>
-                  <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                  <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                     Export Selected Settings
                   </CardTitle>
                 </div>
@@ -585,10 +582,10 @@ export function DataTab() {
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-upload-duotone w-5 h-5" />
                   </motion.div>
-                  <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                  <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                     Import Settings
                   </CardTitle>
                 </div>
@@ -623,13 +620,13 @@ export function DataTab() {
               <CardHeader>
                 <div className="flex items-center mb-2">
                   <motion.div
-                    className="text-red-500 dark:text-red-400 mr-2"
+                    className="text-devonz-elements-item-contentAccent dark:text-rose-400 mr-2"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                   >
                     <div className="i-ph-arrow-counter-clockwise-duotone w-5 h-5" />
                   </motion.div>
-                  <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                  <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                     Reset All Settings
                   </CardTitle>
                 </div>
@@ -664,10 +661,10 @@ export function DataTab() {
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-download-simple-duotone w-5 h-5" />
                   </motion.div>
-                  <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                  <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                     Download Full Backup
                   </CardTitle>
                 </div>
@@ -707,10 +704,10 @@ export function DataTab() {
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-upload-simple-duotone w-5 h-5" />
                   </motion.div>
-                  <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
+                  <CardTitle className="text-lg group-hover:text-[#E68D7B] transition-colors">
                     Restore from Backup
                   </CardTitle>
                 </div>
@@ -801,12 +798,12 @@ export function DataTab() {
       {/* API Keys Section */}
       {activeSection === 'api-keys' && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-white">API Keys</h2>
+          <h2 className="text-xl font-semibold mb-4 text-devonz-elements-textPrimary">API Keys</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-file-text-duotone w-5 h-5" />
                   </motion.div>
                   <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
@@ -843,7 +840,7 @@ export function DataTab() {
             <Card>
               <CardHeader>
                 <div className="flex items-center mb-2">
-                  <motion.div className="text-accent-500 mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <motion.div className="text-[#E68D7B] mr-2" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                     <div className="i-ph-upload-duotone w-5 h-5" />
                   </motion.div>
                   <CardTitle className="text-lg group-hover:text-devonz-elements-item-contentAccent transition-colors">
@@ -883,7 +880,7 @@ export function DataTab() {
       {/* Data Visualization */}
       {activeSection === 'data-usage' && (
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-white">Data Usage</h2>
+          <h2 className="text-xl font-semibold mb-4 text-devonz-elements-textPrimary">Data Usage</h2>
           <Card>
             <CardContent className="p-5">
               <Suspense
