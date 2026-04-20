@@ -207,7 +207,7 @@ export const TerminalTabs = memo(() => {
                             !isActive,
                         },
                       )}
-                      style={isActive ? { color: '#22D3EE' } : undefined}
+                      style={isActive ? { color: 'var(--devonz-elements-textPrimary)' } : undefined}
                       onClick={() => setActiveTerminal(index)}
                     >
                       <div className="i-ph:terminal-window-duotone text-lg" />
@@ -225,7 +225,7 @@ export const TerminalTabs = memo(() => {
                               !isActive,
                           },
                         )}
-                        style={isActive ? { color: '#22D3EE' } : undefined}
+                        style={isActive ? { color: 'var(--devonz-elements-textPrimary)' } : undefined}
                         onClick={() => setActiveTerminal(index)}
                       >
                         <div className="i-ph:terminal-window-duotone text-lg" />
@@ -278,7 +278,7 @@ export const TerminalTabs = memo(() => {
                   ? 'opacity-50 cursor-not-allowed'
                   : 'hover:bg-devonz-elements-terminals-buttonBackground cursor-pointer',
               )}
-              style={{ color: '#22D3EE' }}
+              style={{ color: 'var(--devonz-elements-textPrimary)' }}
             >
               <div className={cn('i-ph:rocket-launch text-sm', isRestarting && 'animate-pulse')} />
               {isRestarting ? 'Restarting...' : 'Reinstall & Run'}
