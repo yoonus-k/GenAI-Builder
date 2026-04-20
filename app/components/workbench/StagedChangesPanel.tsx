@@ -110,11 +110,11 @@ function getChangeTypeIcon(type: ChangeType): string {
 function getChangeTypeColor(type: ChangeType): string {
   switch (type) {
     case 'create':
-      return 'text-green-400';
+      return 'text-devonz-elements-icon-success';
     case 'modify':
-      return 'text-yellow-400';
+      return 'text-yellow-500';
     case 'delete':
-      return 'text-red-400';
+      return 'text-devonz-elements-icon-error';
     default:
       return 'text-devonz-elements-textSecondary';
   }
@@ -204,7 +204,7 @@ const ChangeItem = memo(({ change, onAccept, onReject, onPreview }: ChangeItemPr
             onAccept(change.filePath);
           }}
           title="Accept change"
-          className="text-green-400 hover:text-green-300"
+          className="text-devonz-elements-icon-success hover:opacity-80"
         />
         <IconButton
           icon="i-ph:x"
@@ -214,7 +214,7 @@ const ChangeItem = memo(({ change, onAccept, onReject, onPreview }: ChangeItemPr
             onReject(change.filePath);
           }}
           title="Reject change"
-          className="text-red-400 hover:text-red-300"
+          className="text-devonz-elements-icon-error hover:opacity-80"
         />
       </div>
     </motion.div>
@@ -629,7 +629,7 @@ export const StagedChangesPanel = memo(() => {
               />
               <span className="i-ph:git-diff w-5 h-5 text-devonz-elements-textSecondary" />
               <span className="text-sm font-medium text-devonz-elements-textPrimary">Pending Changes</span>
-              <span className="px-2 py-0.5 text-xs font-medium bg-yellow-500/20 text-yellow-400 rounded-full">
+              <span className="px-2 py-0.5 text-xs font-medium bg-accent-500/10 text-accent-500 border border-accent-500/20 rounded-full">
                 {count + cmdCount}
               </span>
             </div>
@@ -637,19 +637,19 @@ export const StagedChangesPanel = memo(() => {
             {/* Quick stats */}
             <div className="flex items-center gap-3 text-xs text-devonz-elements-textTertiary">
               {byType.create.length > 0 && (
-                <span className="flex items-center gap-1 text-green-400">
+                <span className="flex items-center gap-1 text-devonz-elements-icon-success">
                   <span className="i-ph:plus-circle w-3.5 h-3.5" />
                   {byType.create.length}
                 </span>
               )}
               {byType.modify.length > 0 && (
-                <span className="flex items-center gap-1 text-yellow-400">
+                <span className="flex items-center gap-1 text-yellow-500">
                   <span className="i-ph:pencil-simple w-3.5 h-3.5" />
                   {byType.modify.length}
                 </span>
               )}
               {byType.delete.length > 0 && (
-                <span className="flex items-center gap-1 text-red-400">
+                <span className="flex items-center gap-1 text-devonz-elements-icon-error">
                   <span className="i-ph:trash w-3.5 h-3.5" />
                   {byType.delete.length}
                 </span>
@@ -681,7 +681,7 @@ export const StagedChangesPanel = memo(() => {
               <ChangeGroup
                 title="New Files"
                 icon="i-ph:plus-circle"
-                iconColor="text-green-400"
+                iconColor="text-devonz-elements-icon-success"
                 changes={byType.create}
                 onAccept={handleAccept}
                 onReject={handleReject}
@@ -690,7 +690,7 @@ export const StagedChangesPanel = memo(() => {
               <ChangeGroup
                 title="Modified"
                 icon="i-ph:pencil-simple"
-                iconColor="text-yellow-400"
+                iconColor="text-yellow-500"
                 changes={byType.modify}
                 onAccept={handleAccept}
                 onReject={handleReject}
@@ -699,7 +699,7 @@ export const StagedChangesPanel = memo(() => {
               <ChangeGroup
                 title="Deleted"
                 icon="i-ph:trash"
-                iconColor="text-red-400"
+                iconColor="text-devonz-elements-icon-error"
                 changes={byType.delete}
                 onAccept={handleAccept}
                 onReject={handleReject}
@@ -724,7 +724,9 @@ export const StagedChangesPanel = memo(() => {
                       <span
                         className={cn(
                           'w-4 h-4 flex-shrink-0',
-                          cmd.type === 'shell' ? 'i-ph:terminal-window text-blue-400' : 'i-ph:play text-green-400',
+                          cmd.type === 'shell'
+                            ? 'i-ph:terminal-window text-blue-400'
+                            : 'i-ph:play text-devonz-elements-icon-success',
                         )}
                       />
                       <div className="flex-1 min-w-0">
@@ -741,13 +743,15 @@ export const StagedChangesPanel = memo(() => {
 
             {/* Preview Mode Banner */}
             {isPreviewMode && (
-              <div className="mx-4 mt-2 mb-1 px-3 py-2 bg-yellow-500/20 border border-yellow-500/50 rounded-lg flex items-center gap-2">
-                <span className="i-ph:eye text-yellow-400" />
-                <span className="flex-1 text-sm text-yellow-300">Preview Mode - Changes are temporarily applied</span>
+              <div className="mx-4 mt-2 mb-1 px-3 py-2 bg-accent-500/10 border border-accent-500/30 rounded-lg flex items-center gap-2">
+                <span className="i-ph:eye text-accent-500" />
+                <span className="flex-1 text-sm text-accent-500 font-medium">
+                  Preview Mode - Changes are temporarily applied
+                </span>
                 <button
                   onClick={handleTogglePreviewMode}
                   disabled={isApplying}
-                  className="text-xs text-yellow-400 hover:text-yellow-300 underline disabled:opacity-50"
+                  className="text-xs text-accent-500 hover:text-accent-600 underline disabled:opacity-50"
                 >
                   Exit Preview
                 </button>
@@ -769,7 +773,7 @@ export const StagedChangesPanel = memo(() => {
                   className={cn(
                     'disabled:opacity-50',
                     isPreviewMode
-                      ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                      ? 'bg-accent-500 hover:bg-accent-600 text-white'
                       : 'bg-devonz-elements-button-secondary-background hover:bg-devonz-elements-button-secondary-backgroundHover text-devonz-elements-button-secondary-text',
                   )}
                 >
@@ -781,7 +785,7 @@ export const StagedChangesPanel = memo(() => {
                   size="sm"
                   onClick={handleRejectAll}
                   disabled={isApplying}
-                  className="bg-red-600 hover:bg-red-700 text-white disabled:opacity-50"
+                  className="bg-devonz-elements-button-danger-background hover:bg-devonz-elements-button-danger-backgroundHover text-devonz-elements-button-danger-text disabled:opacity-50"
                 >
                   <span className="i-ph:x-circle mr-1.5" />
                   Reject All
@@ -791,7 +795,7 @@ export const StagedChangesPanel = memo(() => {
                   size="sm"
                   onClick={handleAcceptAll}
                   disabled={isApplying}
-                  className="bg-green-600 hover:bg-green-700 text-white disabled:opacity-50"
+                  className="bg-devonz-elements-button-primary-background hover:bg-devonz-elements-button-primary-backgroundHover text-devonz-elements-button-primary-text disabled:opacity-50"
                 >
                   {isApplying ? (
                     <span className="i-ph:spinner animate-spin mr-1.5" />
