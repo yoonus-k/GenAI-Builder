@@ -2,6 +2,7 @@ import { useStore } from '@nanostores/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { computed, type MapStore } from 'nanostores';
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { themeStore } from '~/lib/stores/theme';
 import {
   getSharedHighlighter,
   safeCodeToHtml,
@@ -144,7 +145,7 @@ export const Artifact = memo(({ artifactId }: ArtifactProps) => {
                 {/* Progress Bar */}
                 <div className="h-0.5 bg-devonz-elements-borderColor rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-green-500"
+                    className="h-full bg-[var(--devonz-elements-item-contentAccent)]"
                     initial={{ width: 0 }}
                     animate={{
                       width: `${(actions.filter((a) => a.status === 'complete').length / actions.length) * 100}%`,
@@ -211,6 +212,8 @@ interface CodeBlockProps {
 
 function CodeBlock({ className, code, language = 'shell', maxLines }: CodeBlockProps) {
   const [html, setHtml] = useState<string>('');
+  const appTheme = useStore(themeStore);
+  const theme = appTheme === 'dark' ? 'dark-plus' : 'light-plus';
 
   const displayCode = useMemo(() => {
     if (maxLines && code) {
@@ -227,7 +230,7 @@ function CodeBlock({ className, code, language = 'shell', maxLines }: CodeBlockP
   useEffect(() => {
     let cancelled = false;
 
-    safeCodeToHtml(displayCode || '', language).then((result) => {
+    safeCodeToHtml(displayCode || '', language, theme).then((result) => {
       if (!cancelled) {
         setHtml(result);
       }
@@ -241,7 +244,9 @@ function CodeBlock({ className, code, language = 'shell', maxLines }: CodeBlockP
   if (!html) {
     return (
       <div className={cn('text-xs overflow-x-auto', className)}>
-        <pre><code>{displayCode}</code></pre>
+        <pre>
+          <code>{displayCode}</code>
+        </pre>
       </div>
     );
   }
@@ -254,12 +259,7 @@ function CodeBlock({ className, code, language = 'shell', maxLines }: CodeBlockP
    * 4. DOMPurify is NOT used because it would strip the legitimate <span> elements Shiki needs for highlighting
    * Risk: LOW - Shiki is a trusted, well-maintained library designed for safe code rendering
    */
-  return (
-    <div
-      className={cn('text-xs overflow-x-auto', className)}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
-  );
+  return <div className={cn('text-xs overflow-x-auto', className)} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 // Keep backward compatibility
@@ -371,11 +371,11 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                   className={cn(
                     'w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0',
                     isComplete
-                      ? 'bg-green-500 text-white'
+                      ? 'bg-[var(--devonz-elements-item-contentAccent)] text-white'
                       : isRunning
-                        ? 'bg-blue-500'
+                        ? 'bg-[var(--devonz-elements-loader-progress)]'
                         : isFailed
-                          ? 'bg-red-500 text-white'
+                          ? 'bg-[var(--devonz-elements-icon-error)] text-white'
                           : 'border border-devonz-elements-borderColor',
                   )}
                 >
@@ -409,8 +409,12 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                 {/* Diff stats badge - positioned on the right */}
                 {type === 'file' && diffStats && (diffStats.linesAdded > 0 || diffStats.linesRemoved > 0) && (
                   <span className="flex items-center gap-1 text-xs ml-auto">
-                    {diffStats.linesAdded > 0 && <span className="text-green-400">+{diffStats.linesAdded}</span>}
-                    {diffStats.linesRemoved > 0 && <span className="text-red-400">-{diffStats.linesRemoved}</span>}
+                    {diffStats.linesAdded > 0 && (
+                      <span className="text-[var(--devonz-elements-icon-success)]">+{diffStats.linesAdded}</span>
+                    )}
+                    {diffStats.linesRemoved > 0 && (
+                      <span className="text-[var(--devonz-elements-icon-error)]">-{diffStats.linesRemoved}</span>
+                    )}
                   </span>
                 )}
 
@@ -465,7 +469,7 @@ function getIconColor(status: ActionState['status']) {
       return 'text-devonz-elements-loader-progress';
     }
     case 'complete': {
-      return 'text-devonz-elements-icon-success';
+      return 'text-devonz-elements-item-contentAccent';
     }
     case 'aborted': {
       return 'text-devonz-elements-textSecondary';
