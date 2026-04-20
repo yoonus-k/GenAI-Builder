@@ -222,7 +222,7 @@ export function CloudProviderCard({ provider, index, onToggle, iconClass, descri
             <span
               className={cn(
                 'inline-block w-2 h-2 rounded-full flex-shrink-0',
-                hasKey ? 'bg-green-500' : hasEnvKey ? 'bg-blue-500' : 'bg-gray-500',
+                hasKey ? 'bg-emerald-500' : hasEnvKey ? 'bg-[#E68D7B]' : 'bg-gray-500',
               )}
               title={hasKey ? 'API key set' : hasEnvKey ? 'Server env key' : 'No API key'}
             />
@@ -247,7 +247,7 @@ export function CloudProviderCard({ provider, index, onToggle, iconClass, descri
 
       {/* Server env key indicator */}
       {hasEnvKey && !hasKey && (
-        <div className="mt-1.5 ml-9 flex items-center gap-1.5 text-xs text-blue-400">
+        <div className="mt-1.5 ml-9 flex items-center gap-1.5 text-xs text-[#E68D7B]">
           <div className="i-ph:server w-3.5 h-3.5 flex-shrink-0" />
           <span>Server API key configured via environment variable</span>
         </div>
