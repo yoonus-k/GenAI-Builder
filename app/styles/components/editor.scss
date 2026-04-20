@@ -41,7 +41,10 @@
 
   --cm-search-backgroundColor: var(--devonz-elements-editor-search-backgroundColor, var(--cm-backgroundColor));
   --cm-search-textColor: var(--devonz-elements-editor-search-textColor, var(--devonz-elements-textSecondary));
-  --cm-search-closeButton-backgroundColor: var(--devonz-elements-editor-search-closeButton-backgroundColor, transparent);
+  --cm-search-closeButton-backgroundColor: var(
+    --devonz-elements-editor-search-closeButton-backgroundColor,
+    transparent
+  );
 
   --cm-search-closeButton-backgroundColorHover: var(
     --devonz-elements-editor-search-closeButton-backgroundColorHover,
@@ -68,7 +71,10 @@
     var(--devonz-elements-item-backgroundActive)
   );
 
-  --cm-search-button-textColor: var(--devonz-elements-editor-search-button-textColor, var(--devonz-elements-textSecondary));
+  --cm-search-button-textColor: var(
+    --devonz-elements-editor-search-button-textColor,
+    var(--devonz-elements-textSecondary)
+  );
 
   --cm-search-button-textColorHover: var(
     --devonz-elements-editor-search-button-textColorHover,
@@ -85,7 +91,10 @@
 
   --cm-search-input-backgroundColor: var(--devonz-elements-editor-search-input-backgroundColor, transparent);
   --cm-search-input-textColor: var(--devonz-elements-editor-search-input-textColor, var(--devonz-elements-textPrimary));
-  --cm-search-input-borderColor: var(--devonz-elements-editor-search-input-borderColor, var(--devonz-elements-borderColor));
+  --cm-search-input-borderColor: var(
+    --devonz-elements-editor-search-input-borderColor,
+    var(--devonz-elements-borderColor)
+  );
 
   --cm-search-input-borderColorFocused: var(
     --devonz-elements-editor-search-input-borderColorFocused,
@@ -132,21 +141,4 @@ html[data-theme='dark'] {
   --devonz-elements-editor-matchingBracketBackgroundColor: rgba(66, 180, 255, 0.3);
   --devonz-elements-editor-search-button-backgroundColor: theme('colors.gray.800');
   --devonz-elements-editor-search-button-backgroundColorHover: theme('colors.alpha.white.10');
-}
-
-/* Force dark background on CodeMirror editor elements */
-.cm-editor {
-  background-color: #0d1117 !important;
-}
-
-.cm-gutters {
-  background-color: #0d1117 !important;
-}
-
-.cm-content {
-  background-color: #0d1117 !important;
-}
-
-.cm-scroller {
-  background-color: #0d1117 !important;
 }
