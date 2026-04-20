@@ -14,6 +14,8 @@ import type {
   FileUIPart,
   StepStartUIPart,
 } from '@ai-sdk/ui-utils';
+import { themeStore } from '~/lib/stores/theme';
+import { useStore } from '@nanostores/react';
 import { ToolInvocations } from './ToolInvocations';
 import type { ToolCallAnnotation } from '~/types/context';
 
@@ -30,19 +32,19 @@ const ThinkingBlock = memo(({ reasoningParts }: { reasoningParts: ReasoningUIPar
   }
 
   return (
-    <div className="mb-3 rounded-lg border border-devonz-elements-borderColor overflow-hidden">
+    <div className="mb-4 rounded-xl surface-1 overflow-hidden transition-all duration-300 shadow-sm border-none">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-devonz-elements-textSecondary bg-devonz-elements-background-depth-2 hover:bg-devonz-elements-background-depth-3 transition-colors"
+        className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-semibold text-devonz-elements-textSecondary bg-transparent hover:surface-2 transition-all duration-200"
       >
-        <div className="i-ph:brain w-4 h-4 text-devonz-elements-item-contentAccent" />
-        <span>Thinking</span>
+        <div className="i-ph:brain-duotone w-4 h-4 text-devonz-elements-item-contentAccent" />
+        <span>View Reasoning</span>
         <div
-          className={`i-ph:caret-right w-3 h-3 ml-auto transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}
+          className={`i-ph:caret-right-bold w-3 h-3 ml-auto transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`}
         />
       </button>
       {isOpen && (
-        <div className="px-3 py-2 text-xs text-devonz-elements-textSecondary bg-devonz-elements-background-depth-1 border-t border-devonz-elements-borderColor max-h-64 overflow-y-auto whitespace-pre-wrap leading-relaxed">
+        <div className="px-4 py-3 text-xs text-devonz-elements-textSecondary surface-0 max-h-80 overflow-y-auto whitespace-pre-wrap leading-relaxed font-mono">
           {combinedText}
         </div>
       )}
@@ -121,8 +123,10 @@ function stripRawArtifactTags(text: string): string {
     result = result.replace(CHAIN_OF_THOUGHT_BLOCK_RE, '').replace(CHAIN_OF_THOUGHT_TAG_RE, '');
   }
 
-  // Strip leaked code blocks when artifacts are present — code content
-  // should only appear inside artifact actions, never in chat text
+  /*
+   * Strip leaked code blocks when artifacts are present — code content
+   * should only appear inside artifact actions, never in chat text
+   */
   if (result.includes('__devonzArtifact__')) {
     result = result.replace(LEAKED_CODE_BLOCK_RE, '');
     result = result.replace(UNCLOSED_CODE_BLOCK_RE, '');
@@ -170,6 +174,7 @@ export const AssistantMessage = memo(
     parts,
     addToolResult,
   }: AssistantMessageProps) => {
+    const theme = useStore(themeStore);
     const filteredAnnotations = (annotations?.filter(
       (annotation: JSONValue) =>
         annotation && typeof annotation === 'object' && Object.keys(annotation).includes('type'),
@@ -199,12 +204,14 @@ export const AssistantMessage = memo(
 
     return (
       <div className="overflow-hidden w-full">
-        {/* Assistant Header - Blink style */}
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-6 h-6 rounded-full bg-devonz-elements-bg-depth-3 border border-devonz-elements-borderColor flex items-center justify-center">
-            <span className="text-xs font-bold text-devonz-elements-textPrimary">D</span>
-          </div>
-          <span className="text-sm font-medium text-devonz-elements-textSecondary">Devonz</span>
+        {/* Assistant Header */}
+        <div className="flex items-center gap-3 mb-4">
+          <img
+            src={theme === 'dark' ? '/logo/Logo_Dark.svg' : '/logo/Logo_Light.svg'}
+            alt="GenAI"
+            className="w-7 h-7 object-contain drop-shadow-sm"
+          />
+          <span className="text-sm font-bold text-devonz-elements-textPrimary tracking-tight">GenAI</span>
           {(codeContext || chatSummary) && (
             <Popover
               side="right"
