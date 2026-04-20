@@ -17,7 +17,8 @@ export const SpeechRecognitionButton = ({
       title={isListening ? 'Stop listening' : 'Start speech recognition'}
       disabled={disabled}
       className={cn('transition-all', {
-        'text-devonz-elements-item-contentAccent': isListening,
+        '!bg-transparent hover:!bg-transparent text-[#64748b] hover:text-[#1e293b]': !isListening,
+        '!bg-transparent hover:!bg-transparent text-[#BB7B6A]': isListening,
       })}
       onClick={isListening ? onStop : onStart}
     >
