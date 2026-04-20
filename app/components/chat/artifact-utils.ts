@@ -187,34 +187,32 @@ export function getFileTypeIconColor(filePath: string): string {
   switch (extension) {
     case 'tsx':
     case 'jsx':
-      return 'text-cyan-400';
+    case 'html':
+    case 'htm':
+      return 'text-accent-400';
     case 'ts':
     case 'mts':
     case 'cts':
-      return 'text-blue-400';
     case 'js':
     case 'mjs':
     case 'cjs':
-      return 'text-yellow-400';
+      return 'text-devonz-elements-textSecondary';
     case 'css':
     case 'scss':
     case 'sass':
     case 'less':
-      return 'text-pink-400';
-    case 'html':
-    case 'htm':
-      return 'text-orange-400';
+      return 'text-devonz-elements-textTertiary';
     case 'json':
     case 'yaml':
     case 'yml':
-      return 'text-green-400';
+      return 'text-devonz-elements-item-contentAccent';
     case 'md':
     case 'mdx':
-      return 'text-white/70';
+      return 'text-devonz-elements-textPrimary';
     case 'py':
-      return 'text-yellow-300';
+      return 'text-accent-500';
     default:
-      return 'text-white/50';
+      return 'text-devonz-elements-textTertiary';
   }
 }
 
