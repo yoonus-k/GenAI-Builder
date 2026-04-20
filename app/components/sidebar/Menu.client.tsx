@@ -330,11 +330,13 @@ export const Menu = () => {
         )}
       >
         <PanelErrorBoundary panelName="sidebar">
-          <div className="h-12 flex items-center justify-between px-4 border-b border-devonz-elements-borderColor bg-devonz-elements-background-depth-2/80 rounded-tr-2xl">
-            <span className="text-devonz-elements-textPrimary font-semibold text-lg">Devonz</span>
-            <div className="flex items-center gap-2">
-              <SettingsButton onClick={handleSettingsClick} />
-              <ThemeSwitch />
+          <div className="h-16 flex items-center justify-between px-6 border-none">
+            <div className="flex items-center gap-3">
+              <img
+                src={theme === 'dark' ? '/logo/Logo_Dark_Text.svg' : '/logo/Logo_Light_Text.svg'}
+                alt="Alinma AI Hub"
+                className="h-8 object-contain drop-shadow-sm"
+              />
             </div>
           </div>
           <CurrentDateTime />
