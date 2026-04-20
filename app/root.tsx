@@ -96,22 +96,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
   useSentryUser();
 
   useEffect(() => {
-    document.querySelector('html')?.setAttribute('data-theme', theme);
+    const html = document.querySelector('html');
+    if (html) {
+      html.setAttribute('data-theme', theme);
+      html.style.backgroundColor = 'var(--devonz-elements-bg-depth-1)';
+    }
   }, [theme]);
 
+  // Set theme color for mobile browser bars
+  const themeColor = theme === 'dark' ? '#001521' : '#FBF8FF';
+
   return (
-    <html lang="en" data-theme={theme}>
+    <html lang="en" data-theme={theme} className="transition-theme">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
-        <meta name="theme-color" content="#0a0a0a" />
+        <meta name="theme-color" content={themeColor} />
         <Links />
         <script dangerouslySetInnerHTML={{ __html: inlineThemeCode }} />
       </head>
-      <body>
+      <body className="bg-devonz-elements-bg-depth-1 text-devonz-elements-textPrimary transition-theme">
         <noscript>
-          <p style={{ padding: '2rem', color: '#fff', background: '#0a0a0a', textAlign: 'center' }}>
+          <p className="p-8 text-center bg-devonz-elements-bg-depth-1 text-devonz-elements-textPrimary">
             JavaScript is required to use Devonz.
           </p>
         </noscript>
