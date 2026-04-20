@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { cn } from '~/utils/cn';
 import type { ShowcaseTemplate, TemplateCategory } from '~/types/showcase-template';
 import { loadShowcaseTemplates } from '~/utils/showcase-templates';
 
@@ -10,6 +11,10 @@ const CATEGORY_BADGE_COLORS: Record<string, { text: string; bg: string }> = {
   dashboard: { text: '#fb923c', bg: 'rgba(251, 146, 60, 0.12)' },
   saas: { text: '#c084fc', bg: 'rgba(192, 132, 252, 0.12)' },
   'ai-app': { text: '#f472b6', bg: 'rgba(244, 114, 182, 0.12)' },
+  fraud: { text: '#ef4444', bg: 'rgba(239, 68, 68, 0.12)' },
+  api: { text: '#3b82f6', bg: 'rgba(59, 130, 246, 0.12)' },
+  bot: { text: '#10b981', bg: 'rgba(16, 185, 129, 0.12)' },
+  compliance: { text: '#f59e0b', bg: 'rgba(245, 158, 11, 0.12)' },
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -19,6 +24,10 @@ const CATEGORY_LABELS: Record<string, string> = {
   dashboard: 'Dashboard',
   saas: 'SaaS',
   'ai-app': 'AI App',
+  fraud: 'Fraud Detection',
+  api: 'API Gateway',
+  bot: 'Trading Bot',
+  compliance: 'Compliance',
 };
 
 function getCategoryBadge(category: TemplateCategory) {
@@ -28,13 +37,21 @@ function getCategoryBadge(category: TemplateCategory) {
   return { colors, label };
 }
 
-const CARD_WIDTH = 180;
+interface TemplateSectionProps {
+  orientation?: 'horizontal' | 'vertical';
+}
+
+const HORIZONTAL_CARD_WIDTH = 180;
+const VERTICAL_CARD_WIDTH = 200;
+const CARD_HEIGHT = 120;
 const GAP = 12;
 
 /** Pixels per second for the auto-scroll */
-const SCROLL_SPEED_PX_PER_SEC = 15;
+const SCROLL_SPEED_PX_PER_SEC = 20;
 
-export const TemplateSection: React.FC = () => {
+export const TemplateSection: React.FC<TemplateSectionProps> = ({ orientation = 'horizontal' }) => {
+  const isVertical = orientation === 'vertical';
+  const cardWidth = isVertical ? VERTICAL_CARD_WIDTH : HORIZONTAL_CARD_WIDTH;
   const navigate = useNavigate();
   const [templates, setTemplates] = useState<ShowcaseTemplate[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,17 +72,19 @@ export const TemplateSection: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  /* Total width of one set of cards (used for animation distance) */
-  const setWidth = useMemo(() => {
+  /* Total size of one set of cards (used for animation distance) */
+  const totalSize = useMemo(() => {
     if (templates.length === 0) {
       return 0;
     }
 
-    return templates.length * (CARD_WIDTH + GAP);
-  }, [templates]);
+    const cardDimension = isVertical ? CARD_HEIGHT : cardWidth;
+
+    return templates.length * (cardDimension + GAP);
+  }, [templates, isVertical, cardWidth]);
 
   /* Duration to traverse one full set at the chosen speed */
-  const durationSec = setWidth > 0 ? setWidth / SCROLL_SPEED_PX_PER_SEC : 0;
+  const durationSec = totalSize > 0 ? totalSize / SCROLL_SPEED_PX_PER_SEC : 0;
 
   if (loading) {
     return (
@@ -112,7 +131,10 @@ export const TemplateSection: React.FC = () => {
 
       {/* Carousel viewport — clips overflow */}
       <div
-        style={{ overflow: 'hidden' }}
+        className={cn('relative', {
+          'overflow-hidden': true,
+          'h-full': isVertical,
+        })}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onFocus={() => setPaused(true)}
