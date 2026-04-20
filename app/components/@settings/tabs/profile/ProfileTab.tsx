@@ -84,7 +84,7 @@ export default function ProfileTab() {
                 'relative group',
                 'transition-all duration-300 ease-out',
                 'hover:ring-devonz-elements-borderColorActive/30 dark:hover:ring-devonz-elements-borderColorActive/30',
-                'hover:shadow-lg hover:shadow-[#06B6D4]/10',
+                'hover:shadow-lg hover:shadow-[#E68D7B]/10',
               )}
             >
               {profile.avatar ? (
