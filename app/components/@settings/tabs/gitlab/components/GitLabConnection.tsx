@@ -145,7 +145,7 @@ export default function GitLabConnection({ connectionTest, onTestConnection }: G
                   href={`${gitlabUrl}/-/user_settings/personal_access_tokens`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-devonz-elements-borderColorActive hover:underline inline-flex items-center gap-1"
+                  className="text-devonz-elements-messages-linkColor underline hover:opacity-80 inline-flex items-center gap-1 font-medium"
                 >
                   Get your token
                   <div className="i-ph:arrow-square-out w-4 h-4" />
@@ -170,8 +170,8 @@ export default function GitLabConnection({ connectionTest, onTestConnection }: G
                   disabled={isConnecting || !token.trim()}
                   className={cn(
                     'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                    'bg-[#FC6D26] text-white',
-                    'hover:bg-[#E24329] hover:text-white',
+                    'bg-[#E68D7B] text-white',
+                    'hover:bg-[#E68D7B]/90 hover:text-white',
                     'disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200',
                     'transform active:scale-95',
                   )}
@@ -207,8 +207,8 @@ export default function GitLabConnection({ connectionTest, onTestConnection }: G
                       onClick={handleDisconnect}
                       className={cn(
                         'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                        'bg-red-500 text-white',
-                        'hover:bg-red-600',
+                        'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200',
+                        'hover:bg-[#E68D7B] hover:text-white',
                       )}
                     >
                       <div className="i-ph:plug w-4 h-4" />
