@@ -365,7 +365,7 @@ export const Menu = () => {
                   <span className="i-ph:magnifying-glass h-4 w-4 text-devonz-elements-textTertiary" />
                 </div>
                 <input
-                  className="w-full bg-devonz-elements-background-depth-3 relative pl-9 pr-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-accent-500/50 text-sm text-devonz-elements-textPrimary placeholder-devonz-elements-textTertiary border border-devonz-elements-borderColor"
+                  className="w-full bg-devonz-elements-background-depth-3 relative pl-9 pr-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#E68D7B]/50 text-sm text-devonz-elements-textPrimary placeholder-devonz-elements-textTertiary border border-devonz-elements-borderColor"
                   type="search"
                   placeholder="Search chats..."
                   onChange={handleSearchChange}
