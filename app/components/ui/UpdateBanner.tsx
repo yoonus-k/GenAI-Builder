@@ -8,6 +8,9 @@ import { csrfFetch } from '~/lib/api/csrf-client';
  * an expandable changelog, and a slide-in entrance animation.
  */
 export function UpdateBanner() {
+  // BANNER_VISIBLE: set to true to re-enable the update notification banner
+  const BANNER_VISIBLE = false;
+
   const { updateAvailable, relativeTime, commitsBehind, changelog, compareUrl, isDocker, error, dismiss } =
     useVersionCheck();
 
@@ -16,7 +19,7 @@ export function UpdateBanner() {
   const [updateStatus, setUpdateStatus] = useState<'idle' | 'updating' | 'success' | 'error'>('idle');
   const [updateMessage, setUpdateMessage] = useState('');
 
-  const shouldRender = updateAvailable || (!!error && !updateAvailable);
+  const shouldRender = BANNER_VISIBLE && (updateAvailable || (!!error && !updateAvailable));
 
   useEffect(() => {
     if (shouldRender) {
