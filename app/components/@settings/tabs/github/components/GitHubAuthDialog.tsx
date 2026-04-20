@@ -121,7 +121,7 @@ export function GitHubAuthDialog({ isOpen, onClose, onSuccess }: GitHubAuthDialo
                       href={`https://github.com/settings/tokens${tokenType === 'fine-grained' ? '/beta' : '/new'}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-devonz-elements-borderColorActive hover:underline inline-flex items-center gap-1"
+                      className="text-devonz-elements-messages-linkColor underline hover:opacity-80 inline-flex items-center gap-1 font-medium"
                     >
                       Get your token
                       <div className="i-ph:arrow-square-out w-4 h-4" />

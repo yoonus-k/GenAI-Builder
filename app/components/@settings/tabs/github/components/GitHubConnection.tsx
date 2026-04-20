@@ -136,7 +136,7 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                   href={`https://github.com/settings/tokens${tokenType === 'fine-grained' ? '/beta' : '/new'}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-devonz-elements-borderColorActive hover:underline inline-flex items-center gap-1"
+                  className="text-devonz-elements-messages-linkColor underline hover:opacity-80 inline-flex items-center gap-1 font-medium"
                 >
                   Get your token
                   <div className="i-ph:arrow-square-out w-4 h-4" />
@@ -164,7 +164,7 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
                   'bg-devonz-elements-bg-depth-3 text-devonz-elements-textPrimary',
-                  'hover:bg-[#5E41D0] hover:text-white',
+                  'hover:bg-[#E68D7B] hover:text-white',
                   'disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200',
                   'transform active:scale-95',
                 )}
@@ -189,8 +189,8 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                     type="button"
                     className={cn(
                       'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                      'bg-red-500 text-white',
-                      'hover:bg-red-600',
+                      'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200',
+                      'hover:bg-[#E68D7B] hover:text-white',
                     )}
                   >
                     <div className="i-ph:plug w-4 h-4" />
