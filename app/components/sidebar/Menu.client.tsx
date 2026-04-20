@@ -1,14 +1,8 @@
 import { motion, type Variants } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Dialog, DialogButton, DialogDescription, DialogRoot, DialogTitle } from '~/components/ui/Dialog';
-import { ThemeSwitch } from '~/components/ui/ThemeSwitch';
-import { SettingsButton } from '~/components/ui/SettingsButton';
 import { PanelErrorBoundary } from '~/components/ui/PanelErrorBoundary';
-
-const ControlPanel = lazy(() =>
-  import('~/components/@settings/core/ControlPanel').then((m) => ({ default: m.ControlPanel })),
-);
 import { Button } from '~/components/ui/Button';
 import { db, deleteById, getAll, chatId, type ChatHistoryItem, useChatHistory } from '~/lib/persistence';
 import { cubicEasingFn } from '~/utils/easings';
@@ -19,6 +13,7 @@ import { cn } from '~/utils/cn';
 import { createScopedLogger } from '~/utils/logger';
 import { useStore } from '@nanostores/react';
 import { sidebarStore } from '~/lib/stores/sidebar';
+import { themeStore } from '~/lib/stores/theme';
 
 const logger = createScopedLogger('Menu');
 
@@ -75,8 +70,8 @@ export const Menu = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<ChatHistoryItem[]>([]);
   const open = useStore(sidebarStore.open);
+  const theme = useStore(themeStore);
   const [dialogContent, setDialogContent] = useState<DialogContent>(null);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
@@ -312,15 +307,6 @@ export const Menu = () => {
     } catch {
       toast.error('Failed to duplicate chat');
     }
-  };
-
-  const handleSettingsClick = () => {
-    setIsSettingsOpen(true);
-    sidebarStore.setOpen(false);
-  };
-
-  const handleSettingsClose = () => {
-    setIsSettingsOpen(false);
   };
 
   const setDialogContentWithLogging = useCallback((content: DialogContent) => {
