@@ -102,7 +102,7 @@ export const Dialog = memo(({ children, className, showCloseButton = true, onClo
     <RadixDialog.Portal>
       <RadixDialog.Overlay asChild>
         <motion.div
-          className={cn('fixed inset-0 z-[9999] bg-black/70 dark:bg-black/80 backdrop-blur-sm')}
+          className={cn('fixed inset-0 z-[9999] bg-black/40 dark:bg-black/80 backdrop-blur-sm')}
           initial="closed"
           animate="open"
           exit="closed"
