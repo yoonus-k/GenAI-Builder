@@ -85,46 +85,40 @@ export function UserMessage({ content, parts }: UserMessageProps) {
   const textContent = stripMetadata(content);
 
   return (
-    <div className="flex flex-col items-end gap-3 w-full min-w-0">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col items-end gap-3 w-full min-w-0 animate-fade-in">
+      <div className="flex items-center gap-2 group">
+        <span className="text-devonz-elements-textTertiary text-xs font-semibold tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+          {profile?.username || 'You'}
+        </span>
         {profile?.avatar ? (
-          <>
-            <span className="text-devonz-elements-textSecondary text-sm">{profile?.username || 'You'}</span>
-            <img
-              src={profile.avatar}
-              alt={profile?.username || 'User'}
-              className="w-6 h-6 object-cover rounded-full ring-1 ring-devonz-elements-borderColor"
-              loading="eager"
-              decoding="sync"
-            />
-          </>
+          <img
+            src={profile.avatar}
+            alt={profile?.username || 'User'}
+            className="w-8 h-8 object-cover rounded-full ring-2 ring-devonz-elements-bg-depth-2 shadow-sm"
+            loading="eager"
+            decoding="sync"
+          />
         ) : (
-          <>
-            <span className="text-devonz-elements-textSecondary text-sm">You</span>
-            <div className="w-6 h-6 rounded-full bg-accent-500/20 flex items-center justify-center">
-              <div className="i-ph:user text-accent-400 text-sm" />
-            </div>
-          </>
+          <div className="w-8 h-8 rounded-full surface-2 flex items-center justify-center border-none shadow-sm">
+            <div className="i-ph:user-bold text-devonz-elements-textSecondary text-sm" />
+          </div>
         )}
       </div>
       <div className="max-w-[85%] ml-auto overflow-hidden">
         {images.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="flex flex-wrap gap-2 mb-3 justify-end">
             {images.map((item, index) => (
-              <div
-                key={index}
-                className="relative rounded-lg border border-devonz-elements-borderColor overflow-hidden"
-              >
+              <div key={index} className="relative rounded-xl surface-2 p-1 overflow-hidden shadow-sm">
                 <img
                   src={`data:${item.mimeType};base64,${item.data}`}
                   alt={`Image ${index + 1}`}
-                  className="h-16 w-16 object-cover"
+                  className="h-20 w-20 object-cover rounded-lg"
                 />
               </div>
             ))}
           </div>
         )}
-        <div className="text-devonz-elements-textPrimary text-sm leading-relaxed min-w-0">
+        <div className="text-devonz-elements-textPrimary text-sm leading-relaxed min-w-0 surface-2 px-5 py-3.5 rounded-2xl rounded-tr-sm shadow-premium">
           <Markdown html>{textContent}</Markdown>
         </div>
       </div>
