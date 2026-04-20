@@ -1,4 +1,6 @@
 import { memo, useEffect, useState } from 'react';
+import { useStore } from '@nanostores/react';
+import { themeStore } from '~/lib/stores/theme';
 import { safeCodeToHtml, type BundledLanguage, type SpecialLanguage } from '~/utils/shiki-highlighter';
 import { cn } from '~/utils/cn';
 import { createScopedLogger } from '~/utils/logger';
@@ -16,7 +18,9 @@ interface CodeBlockProps {
 }
 
 export const CodeBlock = memo(
-  ({ className, code, language = 'plaintext', theme = 'dark-plus', disableCopy = false }: CodeBlockProps) => {
+  ({ className, code, language = 'plaintext', theme: propTheme, disableCopy = false }: CodeBlockProps) => {
+    const appTheme = useStore(themeStore);
+    const theme = propTheme ?? (appTheme === 'dark' ? 'dark-plus' : 'light-plus');
     const [html, setHTML] = useState<string | undefined>(undefined);
     const [copied, setCopied] = useState(false);
 
