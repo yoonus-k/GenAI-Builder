@@ -7,7 +7,7 @@ import { DeployButton } from '~/components/deploy/DeployButton';
 const VercelDomainModal = lazy(() =>
   import('~/components/deploy/VercelDomainModal').then((m) => ({ default: m.VercelDomainModal })),
 );
-import { HeaderAvatar } from './HeaderAvatar.client';
+
 import { AutoFixStatus } from './AutoFixStatus.client';
 import { chatId } from '~/lib/persistence/useChatHistory';
 
@@ -73,7 +73,7 @@ export function HeaderActionButtons() {
       {shouldShowButtons && <DeployButton />}
 
       {/* Avatar */}
-      <HeaderAvatar />
+      {/* <HeaderAvatar /> */}
 
       {/* Vercel Domain Modal */}
       {isVercelModalOpen && (
