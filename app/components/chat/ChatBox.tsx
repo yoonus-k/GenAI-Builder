@@ -82,6 +82,9 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [settingsInitialTab, setSettingsInitialTab] = useState<TabType | undefined>(undefined);
   const [showMoreTools, setShowMoreTools] = useState(false);
+  const hasSubmitContent = props.input.length > 0 || props.uploadedFiles.length > 0;
+  const sendDisabled =
+    !props.providerList || props.providerList.length === 0 || (!props.isStreaming && !hasSubmitContent);
 
   const handleOpenSettings = useCallback((tab?: string) => {
     setIsModelSelectorOpen(false);
@@ -91,15 +94,11 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
 
   return (
     <div
-      className={cn('relative p-4 rounded-xl w-full max-w-chat mx-auto z-prompt', 'shadow-xl')}
-      style={{
-        background: 'var(--devonz-chat-bg)',
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        borderColor: 'var(--devonz-chat-border)',
-        boxShadow: '0 20px 25px -5px var(--devonz-chat-shadow)',
-        backdropFilter: 'blur(24px)',
-      }}
+      className={cn(
+        'relative w-full max-w-chat mx-auto z-prompt rounded-3xl transition-all duration-300',
+        'bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-700/50',
+        'glow-effect p-2',
+      )}
     >
       {/* Model Selector Modal/Popout */}
       <DialogRoot open={isModelSelectorOpen} onOpenChange={setIsModelSelectorOpen}>
@@ -182,14 +181,14 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
           </button>
         </div>
       )}
-      <div className={cn('relative shadow-xs border border-devonz-elements-borderColor backdrop-blur rounded-lg')}>
+      <div className={cn('relative rounded-2xl bg-white/95 dark:bg-slate-900/90 transition-all duration-300')}>
         <textarea
           ref={props.textareaRef}
           aria-label="Chat message input"
           className={cn(
-            'w-full pl-4 pt-4 pr-16 outline-none resize-none text-devonz-elements-textPrimary placeholder-devonz-elements-textTertiary bg-transparent text-sm',
+            'w-full px-4 pt-3 pb-16 pr-16 outline-none resize-none border-none bg-transparent',
+            'text-lg text-devonz-elements-textPrimary placeholder:text-devonz-elements-textTertiary',
             'transition-all duration-200',
-            'hover:border-devonz-elements-focus',
           )}
           onDragEnter={(e) => {
             e.preventDefault();
@@ -276,16 +275,16 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             props.planMode
               ? 'Describe what to plan...'
               : props.chatMode === 'build'
-                ? 'Ask Devonz to build...'
+                ? 'Ask Alinma AI to build secure banking solutions...'
                 : 'What would you like to discuss?'
           }
           translate="no"
         />
         <Suspense fallback={null}>
           <SendButton
-            show={props.input.length > 0 || props.isStreaming || props.uploadedFiles.length > 0}
+            show={true}
             isStreaming={props.isStreaming}
-            disabled={!props.providerList || props.providerList.length === 0}
+            disabled={sendDisabled}
             onClick={(event) => {
               if (props.isStreaming) {
                 props.handleStop?.();
@@ -298,109 +297,112 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             }}
           />
         </Suspense>
-        <div className="flex flex-col text-sm p-4 pt-2 gap-1">
+        <div className="flex flex-col text-sm px-4 pb-3 gap-1">
           {/* Primary toolbar row */}
-          <div className="flex justify-between items-center">
-            <div className="flex gap-1 items-center">
-              <ChatModeSelector
-                chatMode={props.chatMode}
-                setChatMode={props.setChatMode}
-                planMode={props.planMode}
-                setPlanMode={props.setPlanMode}
-              />
-              <AgentToggle />
-              {isChatToolVisible('enhancement') && (
-                <IconButton
-                  title="Enhance prompt"
-                  disabled={props.input.length === 0 || props.enhancingPrompt}
-                  className={cn('transition-all', props.enhancingPrompt ? 'opacity-100' : '')}
-                  onClick={() => {
-                    props.enhancePrompt?.();
-                    toast.success('Prompt enhanced!');
-                  }}
-                >
-                  {props.enhancingPrompt ? (
-                    <div className="i-svg-spinners:90-ring-with-bg text-devonz-elements-loader-progress text-xl animate-spin"></div>
-                  ) : (
-                    <div className="i-devonz:stars text-xl"></div>
-                  )}
-                </IconButton>
-              )}
-
-              {isChatToolVisible('speech') && (
-                <SpeechRecognitionButton
-                  isListening={props.isListening}
-                  onStart={props.startListening}
-                  onStop={props.stopListening}
-                  disabled={props.isStreaming}
-                />
-              )}
-
-              {/* Model Selector Button */}
-              {isChatToolVisible('model-selector') && (
-                <div className="relative">
-                  <IconButton
-                    title="Select Model"
-                    className={cn('transition-all flex items-center gap-1', {
-                      'bg-devonz-elements-item-backgroundAccent text-devonz-elements-item-contentAccent':
-                        isModelSelectorOpen,
-                      'bg-devonz-elements-item-backgroundDefault text-devonz-elements-item-contentDefault':
-                        !isModelSelectorOpen,
-                    })}
-                    onClick={() => setIsModelSelectorOpen(!isModelSelectorOpen)}
-                    disabled={!props.providerList || props.providerList.length === 0}
-                  >
-                    <div className="i-ph:robot text-lg" />
-                  </IconButton>
-                </div>
-              )}
-
-              {/* Divider */}
-              <div className="w-px h-4 bg-devonz-elements-borderColor mx-0.5" />
-
-              {/* More tools toggle */}
+          <div className="flex items-center gap-1.5 pr-14 text-devonz-elements-textSecondary">
+            <ChatModeSelector
+              chatMode={props.chatMode}
+              setChatMode={props.setChatMode}
+              planMode={props.planMode}
+              setPlanMode={props.setPlanMode}
+            />
+            <AgentToggle />
+            {isChatToolVisible('enhancement') && (
               <IconButton
-                title={showMoreTools ? 'Hide tools' : 'More tools'}
+                title="Enhance prompt"
+                disabled={props.input.length === 0 || props.enhancingPrompt}
                 className={cn(
-                  'transition-all',
-                  showMoreTools
-                    ? 'bg-devonz-elements-item-backgroundAccent text-devonz-elements-item-contentAccent'
-                    : 'bg-devonz-elements-item-backgroundDefault text-devonz-elements-item-contentDefault',
+                  'transition-colors !bg-transparent hover:!bg-transparent text-devonz-elements-icon-tertiary hover:text-devonz-elements-textPrimary',
+                  props.enhancingPrompt ? 'opacity-100 text-[#BB7B6A]' : '',
                 )}
-                onClick={() => setShowMoreTools((v) => !v)}
+                onClick={() => {
+                  props.enhancePrompt?.();
+                  toast.success('Prompt enhanced!');
+                }}
               >
-                <div
-                  className={cn(
-                    'text-lg transition-transform duration-200',
-                    showMoreTools ? 'i-ph:x' : 'i-devonz:expand',
-                  )}
-                />
+                {props.enhancingPrompt ? (
+                  <div className="i-svg-spinners:90-ring-with-bg text-devonz-elements-loader-progress text-xl animate-spin"></div>
+                ) : (
+                  <div className="i-devonz:stars text-xl"></div>
+                )}
               </IconButton>
-            </div>
+            )}
 
-            <Suspense>
-              <SupabaseConnection />
-              <ExpoQrModal open={props.qrModalOpen} onClose={() => props.setQrModalOpen(false)} />
-            </Suspense>
+            {isChatToolVisible('speech') && (
+              <SpeechRecognitionButton
+                isListening={props.isListening}
+                onStart={props.startListening}
+                onStop={props.stopListening}
+                disabled={props.isStreaming}
+              />
+            )}
+
+            {/* Model Selector Button */}
+            {isChatToolVisible('model-selector') && (
+              <div className="relative">
+                <IconButton
+                  title="Select Model"
+                  className={cn('transition-colors flex items-center gap-1 !bg-transparent hover:!bg-transparent', {
+                    'text-[#BB7B6A]': isModelSelectorOpen,
+                    'text-devonz-elements-icon-secondary hover:text-devonz-elements-textPrimary': !isModelSelectorOpen,
+                  })}
+                  onClick={() => setIsModelSelectorOpen(!isModelSelectorOpen)}
+                  disabled={!props.providerList || props.providerList.length === 0}
+                >
+                  <div className="i-ph:robot text-lg" />
+                </IconButton>
+              </div>
+            )}
+
+            {/* Divider */}
+            <div className="w-px h-4 bg-devonz-elements-borderColor mx-0.5" />
+
+            {/* More tools toggle */}
+            <IconButton
+              title={showMoreTools ? 'Hide tools' : 'More tools'}
+              className={cn(
+                'transition-colors !bg-transparent hover:!bg-transparent',
+                showMoreTools
+                  ? 'text-[#BB7B6A]'
+                  : 'text-devonz-elements-icon-secondary hover:text-devonz-elements-textPrimary',
+              )}
+              onClick={() => setShowMoreTools((v) => !v)}
+            >
+              <div
+                className={cn(
+                  'text-lg transition-transform duration-200',
+                  showMoreTools ? 'i-ph:x' : 'i-devonz:expand',
+                )}
+              />
+            </IconButton>
           </div>
+
+          <Suspense>
+            <ExpoQrModal open={props.qrModalOpen} onClose={() => props.setQrModalOpen(false)} />
+          </Suspense>
 
           {/* Secondary toolbar row — slides down below primary */}
           <AnimatePresence>
             {showMoreTools && (
               <motion.div
-                className="flex gap-1 items-center overflow-hidden"
+                className="flex gap-1 items-center overflow-hidden pr-14"
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2, ease: 'easeInOut' }}
               >
                 <Suspense>
+                  <SupabaseConnection />
                   {isChatToolVisible('theme-selector') && (
                     <ColorSchemeDialog designScheme={props.designScheme} setDesignScheme={props.setDesignScheme} />
                   )}
                   {isChatToolVisible('mcp-tools') && <McpTools />}
                   {isChatToolVisible('attachments') && (
-                    <IconButton title="Upload file" className="transition-all" onClick={() => props.handleFileUpload()}>
+                    <IconButton
+                      title="Upload file"
+                      className="transition-colors !bg-transparent hover:!bg-transparent text-devonz-elements-icon-secondary hover:text-devonz-elements-textPrimary"
+                      onClick={() => props.handleFileUpload()}
+                    >
                       <div className="i-ph:paperclip text-xl"></div>
                     </IconButton>
                   )}
