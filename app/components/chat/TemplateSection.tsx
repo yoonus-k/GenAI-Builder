@@ -85,7 +85,31 @@ export const TemplateSection: React.FC = () => {
   const displayItems = [...templates, ...templates];
 
   return (
-    <div className="w-full max-w-chat mx-auto mt-4 px-4" style={{ minWidth: 0 }}>
+    <div
+      className={cn('mx-auto px-4', {
+        'w-full max-w-chat mt-32': !isVertical,
+        'w-[240px] h-full flex flex-col pt-16 pb-20': isVertical,
+      })}
+      style={{ minWidth: 0 }}
+    >
+      {isVertical && (
+        <div className="flex flex-col items-center gap-3 mb-6 px-2">
+          <div className="flex items-center gap-3 w-full">
+            <div
+              className="flex-1 h-px"
+              style={{ background: 'linear-gradient(to right, transparent, var(--devonz-elements-borderColor))' }}
+            />
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-devonz-elements-textTertiary whitespace-nowrap">
+              Templates
+            </span>
+            <div
+              className="flex-1 h-px"
+              style={{ background: 'linear-gradient(to left, transparent, var(--devonz-elements-borderColor))' }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Carousel viewport — clips overflow */}
       <div
         style={{ overflow: 'hidden' }}
