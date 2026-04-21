@@ -58,7 +58,8 @@ export function useChatHistory() {
   const [archivedMessages, setArchivedMessages] = useState<Message[]>([]);
   const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-  const [urlId, setUrlId] = useState<string | undefined>();
+  const urlIdRef = useRef<string | undefined>();
+  const chatIdRef = useRef<string | undefined>();
 
   // Track last snapshot parameters so debounced file-change saves use the same message ID
   const lastSnapshotParamsRef = useRef<{ chatIdx: string; chatSummary?: string } | null>(null);
@@ -128,7 +129,8 @@ export function useChatHistory() {
 
           setInitialMessages(filteredMessages);
 
-          setUrlId(storedMessages.urlId);
+          urlIdRef.current = storedMessages.urlId;
+          chatIdRef.current = storedMessages.id;
           description.set(storedMessages.description);
           chatId.set(storedMessages.id);
           chatMetadata.set(storedMessages.metadata);
@@ -152,6 +154,7 @@ export function useChatHistory() {
        * breaks the wasNewChat detection in Chat.client.tsx and causes
        * plan-mode carry-over to fail for new chats.
        */
+      chatIdRef.current = undefined;
       chatId.set(undefined);
       description.set(undefined);
       chatMetadata.set(undefined);
@@ -161,7 +164,7 @@ export function useChatHistory() {
 
   const takeSnapshot = useCallback(
     async (chatIdx: string, files: FileMap, _chatId?: string | undefined, chatSummary?: string) => {
-      const id = chatId.get();
+      const id = chatIdRef.current || chatId.get();
 
       if (!id || !db) {
         return;
@@ -198,7 +201,7 @@ export function useChatHistory() {
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
     const unsubscribe = workbenchStore.files.subscribe(() => {
-      const id = chatId.get();
+      const id = chatIdRef.current || chatId.get();
       const params = lastSnapshotParamsRef.current;
 
       if (!id || !params) {
@@ -371,14 +374,14 @@ export function useChatHistory() {
     ready: !mixedId || ready,
     initialMessages,
     updateChatMetaData: async (metadata: IChatMetadata) => {
-      const id = chatId.get();
+      const id = chatIdRef.current || chatId.get();
 
       if (!db || !id) {
         return;
       }
 
       try {
-        await setMessages(db, id, initialMessages, urlId, description.get(), undefined, metadata);
+        await setMessages(db, id, initialMessages, urlIdRef.current, description.get(), undefined, metadata);
         chatMetadata.set(metadata);
       } catch (error) {
         toast.error('Failed to update chat metadata');
@@ -406,18 +409,19 @@ export function useChatHistory() {
       try {
         messages = messages.filter((m) => !m.annotations?.includes('no-store'));
 
-        if (initialMessages.length === 0 && !chatId.get()) {
+        if (initialMessages.length === 0 && !chatIdRef.current) {
           const nextId = await getNextId(db);
+          chatIdRef.current = nextId;
           chatId.set(nextId);
           versionsStore.setDBContext(db, nextId);
         }
 
-        let resolvedUrlId = urlId;
+        let resolvedUrlId = urlIdRef.current;
 
-        if (!resolvedUrlId) {
-          const id = chatId.get()!;
+        if (!resolvedUrlId && chatIdRef.current) {
+          const id = chatIdRef.current;
           resolvedUrlId = await getUrlId(db, id);
-          setUrlId(resolvedUrlId);
+          urlIdRef.current = resolvedUrlId;
           navigateChat(resolvedUrlId);
         }
 
@@ -523,7 +527,7 @@ export function useChatHistory() {
           }
         }
 
-        const finalChatId = chatId.get();
+        const finalChatId = chatIdRef.current || chatId.get();
 
         if (!finalChatId) {
           logger.error('Cannot save messages, chat ID is not set.');
@@ -596,7 +600,7 @@ export function useChatHistory() {
         return undefined;
       }
     },
-    exportChat: async (id = urlId) => {
+    exportChat: async (id = urlIdRef.current) => {
       if (!db || !id) {
         return;
       }
