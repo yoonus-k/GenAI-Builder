@@ -196,7 +196,7 @@ export const TerminalTabs = memo(() => {
               return (
                 <React.Fragment key={index}>
                   {index === 0 ? (
-                    <button
+                    <div
                       key={index}
                       className={cn(
                         'flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full',
@@ -212,10 +212,10 @@ export const TerminalTabs = memo(() => {
                     >
                       <div className="i-ph:terminal-window-duotone text-lg" />
                       Terminal
-                    </button>
+                    </div>
                   ) : (
                     <React.Fragment>
-                      <button
+                      <div
                         key={index}
                         className={cn(
                           'flex items-center text-sm cursor-pointer gap-1.5 px-3 py-2 h-full whitespace-nowrap rounded-full',
@@ -239,7 +239,7 @@ export const TerminalTabs = memo(() => {
                         >
                           <div className="i-ph:x text-xs" />
                         </button>
-                      </button>
+                      </div>
                     </React.Fragment>
                   )}
                 </React.Fragment>
